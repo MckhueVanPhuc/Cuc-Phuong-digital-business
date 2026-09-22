@@ -331,11 +331,13 @@ sequenceDiagram
 
 ## 7. Screens involved
 
-| Screen ID | Screen name | Priority | Screen Spec file |
+Chi tiết phân rã tại [screen-list-M02.md](../docs/screen-list-M02.md).
+
+| Screen ID | Screen name | Priority | Screen Spec target |
 |---|---|---|---|
-| S-M02-01 | Màn hình phiên trải nghiệm (bản đồ + QR) | Must | `screens/screen-spec-S-M02-01.md` |
-| S-M02-02 | Màn hình nội dung checkpoint | Must | `screens/screen-spec-S-M02-02.md` |
-| S-M02-03 | Màn hình kết thúc phiên | Must | `screens/screen-spec-S-M02-03.md` |
+| SCR-M02-001 | Phiên trải nghiệm (journey map + QR) | Must | `screens/screen-spec-SCR-M02-001.md` |
+| SCR-M02-002 | Nội dung checkpoint | Must | `screens/screen-spec-SCR-M02-002.md` |
+| SCR-M02-003 | Kết thúc phiên | Must | `screens/screen-spec-SCR-M02-003.md` |
 
 ## 8. Success criteria
 

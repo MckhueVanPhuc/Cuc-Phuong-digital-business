@@ -1,42 +1,63 @@
 # System Context Diagram — Cúc Phương Quest
 
+Sơ đồ mô tả ranh giới logic của MVP theo specification M01–M03. Đây không phải deployment diagram hoặc physical API design.
+
 ```mermaid
 flowchart LR
     visitor["Du khách"]
-    admin["Quản trị viên"]
-    reviewer["Người duyệt nội dung"]
+    contentStaff["Content Staff"]
+    reviewer["Reviewer"]
+    park["Park Management"]
 
-    m01["M01<br/>Lập kế hoạch & chuẩn bị tuyến"]
-    m02["M02<br/>Trải nghiệm khám phá tại thực địa"]
-    m03["M03<br/>Vận hành & quản trị nội dung"]
+    m01["M01<br/>Route Planning & Preparation"]
+    m02["M02<br/>Field Experience"]
+    m03["M03<br/>Operations & Content Administration"]
 
-    visitor -->|"chọn ngôn ngữ, tiêu chí, tuyến; tải offline; Start"| m01
-    m01 -->|"danh mục/gợi ý tuyến, cảnh báo, trạng thái gói"| visitor
-    visitor -->|"quét QR, khám phá checkpoint"| m02
-    m02 -->|"nội dung, tiến độ và kết quả phiên"| visitor
+    visitor -->|"chọn ngôn ngữ, khám phá/chọn tuyến, chuẩn bị offline, Start"| m01
+    m01 -->|"danh mục/gợi ý tuyến, cảnh báo và trạng thái gói"| visitor
+    visitor -->|"bắt đầu phiên, quét QR, khám phá checkpoint, kết thúc"| m02
+    m02 -->|"hành trình, nội dung checkpoint và tiến độ phiên"| visitor
 
-    admin -->|"quản lý tuyến, checkpoint, QR, nội dung, media; đóng khẩn cấp"| m03
-    reviewer -->|"duyệt nội dung, mở lại checkpoint"| m03
-    m03 -->|"báo cáo RPT-01/RPT-02"| admin
-    m03 -->|"trạng thái nội dung cần duyệt"| reviewer
+    contentStaff -->|"tạo/sửa, gửi duyệt, xem báo cáo; đóng khẩn cấp"| m03
+    reviewer -->|"duyệt/từ chối; đóng/mở lại tuyến hoặc checkpoint"| m03
+    park -->|"xác nhận thực địa và biện pháp an toàn ngoài hệ thống"| m03
+    m03 -->|"kết quả duyệt và trạng thái vận hành"| contentStaff
+    m03 -->|"báo cáo vận hành tổng hợp"| park
 
-    m03 -->|"dữ liệu công khai tuyến/checkpoint/nội dung/tag; snapshot đã xuất bản"| m01
+    m03 -->|"tuyến/nội dung public và SnapshotTuyen bất biến"| m01
     m01 -->|"LanguagePreference; SelectedRouteContext sau Start; OfflinePackage SAN_SANG"| m02
-    m03 -->|"RouteJourneyMap: checkpointId, sequence, connectivityMode, qrIdentifiers[]; nội dung công khai/tra QR trực tuyến"| m02
-    m02 -->|"SessionSyncRecord chỉ khi phiên HOAN_TAT hoặc BO_DO"| m03
+    m03 -->|"RouteJourneyMap, checkpoint, qrIdentifiers và nội dung public trực tuyến"| m02
+    m02 -->|"SessionSyncRecord ẩn danh của phiên HOAN_TAT hoặc BO_DO"| m03
 ```
 
 ## Ranh giới trách nhiệm
 
-| Thành phần | Sở hữu chính |
-|---|---|
-| M01 | Chọn tuyến, chọn ngôn ngữ, chuẩn bị/tải gói offline và khởi tạo ngữ cảnh tuyến cho du khách. |
-| M02 | Quét QR, trải nghiệm tại checkpoint, tiến độ và phiên chơi (`PlaySession`, `CheckpointVisit`). |
-| M03 | Dữ liệu vận hành: tuyến, checkpoint, QR, nội dung, media, xuất bản, kiểm duyệt và báo cáo. |
+| Module | Sở hữu | Không sở hữu |
+|---|---|---|
+| M01 | Chọn ngôn ngữ/tuyến, recommendation, chuẩn bị và quản lý gói offline, Start và handoff sang M02 | Quét QR, tiến độ phiên, CRUD dữ liệu nguồn |
+| M02 | `PlaySession`, `CheckpointVisit`, quét QR, hiển thị nội dung tại điểm, lưu tiến độ cục bộ và đồng bộ phiên kết thúc | Quản trị nội dung, tạo gói offline, thay đổi context M01 |
+| M03 | Tuyến, checkpoint, nhiều QR trên mỗi checkpoint, nội dung/media, kiểm duyệt, snapshot, trạng thái vận hành và RPT-01/RPT-02 | Trải nghiệm thực địa, package trên thiết bị, cảnh báo real-time tới phiên đang chạy |
 
-## Quy ước liên module
+## Contract liên module
 
-- Một `checkpointId` có thể có nhiều `qrIdentifiers[]`; QR được ánh xạ về checkpoint đó.
-- Tài nguyên offline và check-in ở M02 được định danh theo `checkpointId`, không theo từng mã QR.
-- M03 là nguồn dữ liệu công khai; M01 sử dụng snapshot đã xuất bản cho chuẩn bị tuyến, còn M02 dùng `RouteJourneyMap` và chỉ tra cứu trực tuyến khi cần.
-- M02 không gửi sự kiện từng lượt quét sang M03. Chỉ đồng bộ bản ghi phiên ẩn danh khi phiên ở trạng thái kết thúc.
+| Hướng | Contract | Điều kiện chính |
+|---|---|---|
+| M03 → M01 | Public route/content/tags/status và `SnapshotTuyen` | Chỉ dữ liệu đã phát hành; snapshot bất biến và versioned |
+| M01 → M02 | `LanguagePreference` | Công bố sau khi chọn/đổi hợp lệ |
+| M01 → M02 | `SelectedRouteContext.routeId` | Chỉ ghi/công bố sau Start hợp lệ |
+| M01 → M02 | `OfflinePackage` | M02 chỉ đọc package active ở trạng thái `SAN_SANG` |
+| M03 → M02 | Route/checkpoint/QR/content public | Một checkpoint có `qrIdentifiers[]`; QR phân giải về cùng `checkpointId` |
+| M02 → M03 | `SessionSyncRecord` | Ẩn danh; chỉ `HOAN_TAT`/`BO_DO`; upsert theo `sessionId` |
+
+## Giới hạn hệ thống
+
+- Tài nguyên offline và check-in khóa theo `checkpointId`, không theo từng QR vật lý.
+- Nội dung `OFFLINE_REQUIRED` được M02 đọc từ package M01; nội dung `ONLINE_AVAILABLE` được đọc trực tiếp từ M03.
+- Đóng tuyến/checkpoint cập nhật nguồn cho lượt đọc mới nhưng không cam kết cảnh báo hay ngắt phiên M02 đang chạy.
+- Báo cáo M03 chạy theo yêu cầu sau khi phiên kết thúc được đồng bộ thành công; không cam kết realtime.
+
+## Nguồn
+
+- [Specification M01](../../specs/spec-M01.md)
+- [Specification M02](../../specs/spec-M02.md)
+- [Specification M03](../../specs/spec-M03.md)

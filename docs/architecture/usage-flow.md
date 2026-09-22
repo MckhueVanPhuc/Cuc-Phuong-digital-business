@@ -10,6 +10,7 @@ File này chỉ tập hợp nguyên văn các block `flowchart` đã có trong s
 4. [UF-04 — Resource Management & Lazy Update](#uf-04--resource-management--lazy-update)
 5. [UF-05 — Start Route & Handoff](#uf-05--start-route--handoff)
 6. [UF-06 — M02 Usage Flow](#uf-06--m02-usage-flow)
+7. [UF-07 — M03 Route Publication Flow](#uf-07--m03-route-publication-flow)
 
 ## M01 — Functional Flows
 
@@ -155,6 +156,35 @@ flowchart TD
     AE --> Y
 ```
 
-## M03
+## M03 — Usage flow
 
-[spec-M03.md](../../specs/spec-M03.md) hiện là scaffold và chưa có block `flowchart`, nên không có flow M03 trong file tổng hợp này.
+Nguồn: [spec-M03.md](../../specs/spec-M03.md), §4.1.
+
+### UF-07 — M03 Route Publication Flow
+
+```mermaid
+flowchart TD
+    S(["Content staff starts a new route"]) --> B["Enter Vietnamese name, description, distance, duration, difficulty"]
+    B --> P["Add an attraction point"]
+    P --> V{"Connectivity mode?"}
+    V -->|"Network-available"| F["Confirm a field check found a stable connection"]
+    V -->|"Offline-required"| Q["Generate one or more QR codes for the point"]
+    F --> Q
+    Q --> C["Write introduction content in Vietnamese and English"]
+    C --> K{"Point has an active QR code and both languages published?"}
+    K -->|"No"| Q
+    K -->|"Yes"| A["Point activated"]
+    A --> M{"More attraction points to add?"}
+    M -->|"Yes"| P
+    M -->|"No"| T["Assign the three recommendation tag groups"]
+    T --> EN["Add the English name and description"]
+    EN --> R["Submit the route for approval"]
+    R --> G{"Bilingual fields, tags, points and content all complete?"}
+    G -->|"No"| W["Block submission, show the missing items"]
+    W --> B
+    G -->|"Yes"| RV{"A different reviewer approves?"}
+    RV -->|"Reject"| W2["Route returns to NHAP with the reason"]
+    RV -->|"Approve"| PB["Route becomes HOAT_DONG"]
+    PB --> SN["System generates and publishes the first snapshot"]
+    SN --> E(["Trip-planning module can now read the route"])
+```

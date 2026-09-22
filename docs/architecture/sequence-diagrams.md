@@ -2,7 +2,14 @@
 
 File này chỉ tập hợp nguyên văn các block `sequenceDiagram` đã có trong specification module; không diễn giải, chỉnh sửa hoặc bổ sung flow.
 
-## M01 — Start route & handoff
+## Danh mục sequence
+
+1. [SD-01 — M01 Start Route & Handoff](#sd-01--m01-start-route--handoff)
+2. [SD-02 — M02 Quét QR & Check-in](#sd-02--m02-quét-qr--check-in)
+3. [SD-03 — M02 Session Sync](#sd-03--m02-session-sync)
+4. [SD-04 — M03 Route Approval & Publication](#sd-04--m03-route-approval--publication)
+
+## SD-01 — M01 Start Route & Handoff
 
 Nguồn: [spec-M01.md](../../specs/spec-M01.md), §4.7.
 
@@ -27,7 +34,7 @@ sequenceDiagram
     Note over M02,D: M02 không sửa dữ liệu M01, QR ngoài route không đổi context
 ```
 
-## M02 — Sequence for the main flow (Quét QR và Check-in)
+## SD-02 — M02 Quét QR & Check-in
 
 Nguồn: [spec-M02.md](../../specs/spec-M02.md), §4.2.
 
@@ -67,7 +74,7 @@ sequenceDiagram
     end
 ```
 
-## M02 — Sequence for session sync
+## SD-03 — M02 Session Sync
 
 Nguồn: [spec-M02.md](../../specs/spec-M02.md), §4.3.
 
@@ -87,6 +94,37 @@ sequenceDiagram
     M02->>DB: Cập nhật syncedAt
 ```
 
-## M03
+## SD-04 — M03 Route Approval & Publication
 
-[spec-M03.md](../../specs/spec-M03.md) hiện là scaffold và chưa có block `sequenceDiagram`, nên không có sơ đồ M03 trong file tổng hợp này.
+Nguồn: [spec-M03.md](../../specs/spec-M03.md), §4.2.
+
+```mermaid
+sequenceDiagram
+    actor CS as Content Staff
+    participant BE as M03 backend
+    participant SYS as System completeness check
+    actor RV as Reviewer
+    participant SNAP as Snapshot generator
+    participant M01 as Trip-planning module
+
+    CS->>BE: submit route for approval
+    BE->>SYS: check bilingual fields, tags, checkpoints, QR codes, content
+    SYS-->>BE: completeness result
+
+    alt Missing items
+        BE-->>CS: keep route in NHAP and return missing items
+    else Complete
+        BE->>BE: change route status to CHO_DUYET
+        BE-->>RV: route is ready for review
+
+        RV->>BE: approve route
+        Note over RV,BE: Reviewer must not be the creator
+
+        BE->>BE: change route status to HOAT_DONG
+        BE->>SNAP: build offline-required snapshot
+        SNAP-->>BE: immutable content version published
+
+        BE-->>M01: route is active, new snapshot is available
+        Note over BE,M01: Previous snapshot remains available according to the retention policy
+    end
+```

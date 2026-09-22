@@ -9,7 +9,7 @@
 | Version | 1.1 — đồng bộ baseline BRD v2.4 |
 | Status | Ready for SDD/implementation planning — contract MVP M01/M02/M03 đã chốt |
 | Source of Truth | [BRD-module-1.md](../business-requirements/BRD-module-1.md), v2.4 |
-| Derived Documents | Functional requirements, detail and inventory are consolidated in this specification and [function-list.md](../docs/function-list.md). |
+| Derived Documents | [Function List M01](../docs/function-list-M01.md), [Screen List M01](../docs/screen-list-M01.md) |
 | Last Updated | 2026-09-22 |
 | Next Step | SDD, API/storage schema và implementation planning |
 
@@ -916,14 +916,14 @@ Giữ operation của Step 4 §5. Dấu “—” nghĩa không có operation M0
 
 ## 7. Screens Involved
 
-Baseline screen decomposition: **Ready for visual design**. Phân rã và mapping đầy đủ tại [screen-list.md](../docs/screen-list.md). BRD v2.4 nêu sáu screen logic; spec gom các UI phụ như chọn ngôn ngữ và xác nhận tải vào bốn screen triển khai để tránh tạo màn hình độc lập không cần thiết.
+Baseline screen decomposition: **Ready for visual design**. Phân rã và mapping đầy đủ tại [screen-list-M01.md](../docs/screen-list-M01.md). BRD v2.4 nêu sáu screen logic; spec gom các UI phụ như chọn ngôn ngữ và xác nhận tải vào bốn screen triển khai để tránh tạo màn hình độc lập không cần thiết.
 
 | Screen ID | Screen Name | Primary FRs | Screen Spec |
 |---|---|---|---|
-| SCR-M01-001 | Danh mục tuyến | FR-M01-001, FR-M01-002 | [screen-spec-SCR-M01-001.md](../screens/screen-spec-SCR-M01-001.md) |
-| SCR-M01-002 | Gợi ý tuyến | FR-M01-004, FR-M01-001 | [screen-spec-SCR-M01-002.md](../screens/screen-spec-SCR-M01-002.md) |
-| SCR-M01-003 | Chi tiết tuyến & Chuẩn bị | FR-M01-003, FR-M01-005, FR-M01-006, FR-M01-007, FR-M01-011, FR-M01-001 | [screen-spec-SCR-M01-003.md](../screens/screen-spec-SCR-M01-003.md) |
-| SCR-M01-004 | Quản lý tài nguyên | FR-M01-009, FR-M01-007, FR-M01-001 | [screen-spec-SCR-M01-004.md](../screens/screen-spec-SCR-M01-004.md) |
+| SCR-M01-001 | Danh mục tuyến | FR-M01-001, FR-M01-002 | `screens/screen-spec-SCR-M01-001.md` — chưa tạo |
+| SCR-M01-002 | Gợi ý tuyến | FR-M01-004, FR-M01-001 | `screens/screen-spec-SCR-M01-002.md` — chưa tạo |
+| SCR-M01-003 | Chi tiết tuyến & Chuẩn bị | FR-M01-003, FR-M01-005, FR-M01-006, FR-M01-007, FR-M01-011, FR-M01-001 | `screens/screen-spec-SCR-M01-003.md` — chưa tạo |
+| SCR-M01-004 | Quản lý tài nguyên | FR-M01-009, FR-M01-007, FR-M01-001 | `screens/screen-spec-SCR-M01-004.md` — chưa tạo |
 
 FR-M01-008/010/012/013 không có screen riêng; được map vào state/feedback/handoff trong Screen List §4.1. Khi tạo screen spec, dùng quy ước `screens/screen-spec-<SCREEN-ID>.md` tính từ thư mục project.
 
