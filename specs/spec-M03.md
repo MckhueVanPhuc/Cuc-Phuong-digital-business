@@ -162,23 +162,30 @@ flowchart TD
 sequenceDiagram
     actor CS as Content Staff
     participant BE as M03 backend
-    participant SYS as System (completeness check)
+    participant SYS as System completeness check
     actor RV as Reviewer
     participant SNAP as Snapshot generator
     participant M01 as Trip-planning module
 
     CS->>BE: submit route for approval
-    BE->>SYS: check bilingual fields, tags, points, QR codes, content
-    SYS-->>BE: complete, or a list of missing items
+    BE->>SYS: check bilingual fields, tags, checkpoints, QR codes, content
+    SYS-->>BE: completeness result
+
     alt Missing items
-        BE-->>CS: route stays in draft, missing items listed
+        BE-->>CS: keep route in Draft and return missing items
     else Complete
+        BE->>BE: change route status to Pending Review
         BE-->>RV: route is ready for review
-        RV->>BE: approve (reviewer is not the creator)
-        BE->>SNAP: build the offline-required data set
-        SNAP-->>BE: new content version, published, unchangeable
-        BE-->>M01: route is live; new snapshot is available
-        Note over BE,M01: the previous snapshot stays reachable until M01 confirms it has switched over
+
+        RV->>BE: approve route
+        Note over RV,BE: Reviewer must not be the creator
+
+        BE->>BE: change route status to Active
+        BE->>SNAP: build offline-required snapshot
+        SNAP-->>BE: immutable content version published
+
+        BE-->>M01: route is active, new snapshot is available
+        Note over BE,M01: Previous snapshot remains available according to the retention policy
     end
 ```
 
