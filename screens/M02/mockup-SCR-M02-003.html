@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SCR-M02-003 — Kết thúc phiên — Mockup</title>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --color-primary:#2D6A4F;--color-primary-dark:#1B4332;--color-primary-light:#40916C;
+      --color-accent:#D4A017;--color-accent-light:#F4D03F;
+      --color-bg:#F5F3EE;--color-surface:#FFFFFF;--color-border:#E0DDD8;
+      --color-text-primary:#1C1C1C;--color-text-secondary:#5C5C5C;--color-text-muted:#9B9B9B;
+      --color-danger:#C0392B;--color-success:#27AE60;--color-warning:#E67E22;
+      --color-info:#2980B9;--color-overlay:rgba(27,67,50,0.6);
+      --font-display:'Playfair Display',Georgia,serif;--font-body:'Nunito',-apple-system,BlinkMacSystemFont,sans-serif;
+      --space-1:4px;--space-2:8px;--space-3:12px;--space-4:16px;--space-5:20px;--space-6:24px;--space-8:32px;--space-10:40px;
+      --radius-sm:6px;--radius-md:12px;--radius-lg:16px;--radius-xl:24px;
+      --shadow-card:0 2px 8px rgba(0,0,0,0.08),0 1px 2px rgba(0,0,0,0.04);
+      --shadow-elevated:0 8px 24px rgba(0,0,0,0.12),0 2px 6px rgba(0,0,0,0.06);
+      --transition-fast:150ms ease;--transition-normal:250ms ease;
+    }
+    body{font-family:var(--font-body);background:#1C1C1C;display:flex;justify-content:center;align-items:flex-start;min-height:100vh;padding:var(--space-6);gap:var(--space-6);}
+    .phone-frame{width:375px;height:812px;background:var(--color-bg);border-radius:44px;overflow:hidden;position:relative;box-shadow:0 0 0 1px rgba(255,255,255,0.1),0 32px 80px rgba(0,0,0,0.6),0 0 120px rgba(45,106,79,0.2);display:flex;flex-direction:column;}
+    .phone-frame::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:150px;height:30px;background:#000;border-radius:0 0 20px 20px;z-index:100;}
+    .status-bar{height:44px;background:var(--color-primary-dark);display:flex;justify-content:space-between;align-items:flex-end;padding:0 var(--space-6) 6px;color:#fff;font-size:12px;font-weight:600;letter-spacing:0.3px;flex-shrink:0;z-index:10;}
+    .status-bar-left{opacity:0.9;}
+    .status-bar-right{display:flex;gap:var(--space-2);align-items:center;}
+    .battery-icon{display:flex;align-items:center;gap:3px;}
+    .battery-icon svg{width:22px;height:12px;}
+    .header{background:var(--color-primary);padding:var(--space-3) var(--space-4) var(--space-4);display:flex;align-items:center;gap:var(--space-3);flex-shrink:0;position:relative;}
+    .header-back{width:40px;height:40px;border:none;background:rgba(255,255,255,0.15);border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background var(--transition-fast);flex-shrink:0;}
+    .header-back:hover{background:rgba(255,255,255,0.25);}
+    .header-back svg{color:#fff;}
+    .header-title{flex:1;text-align:center;font-family:var(--font-display);font-size:18px;font-weight:700;color:#fff;letter-spacing:0.3px;}
+    .lang-toggle{width:40px;height:40px;border:none;background:rgba(255,255,255,0.15);border-radius:var(--radius-sm);color:#fff;font-size:12px;font-weight:700;cursor:pointer;transition:background var(--transition-fast);flex-shrink:0;font-family:var(--font-body);}
+    .lang-toggle:hover{background:rgba(255,255,255,0.25);}
+    .content{flex:1;overflow-y:auto;padding:var(--space-4);display:flex;flex-direction:column;gap:var(--space-4);scrollbar-width:none;}
+    .content::-webkit-scrollbar{display:none;}
+    /* Celebration header */
+    .celebration{text-align:center;padding:var(--space-2) 0 var(--space-4);}
+    .celebration-icon{width:72px;height:72px;background:linear-gradient(135deg,var(--color-accent),#B8860B);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto var(--space-3);box-shadow:0 4px 20px rgba(212,160,23,0.4);}
+    .celebration-icon svg{width:36px;height:36px;color:#fff;}
+    .celebration-title{font-family:var(--font-display);font-size:20px;font-weight:700;color:var(--color-text-primary);line-height:1.3;}
+    /* Route summary card */
+    .route-summary{background:linear-gradient(135deg,var(--color-primary),var(--color-primary-dark));border-radius:var(--radius-lg);padding:var(--space-4) var(--space-5);display:flex;flex-direction:column;gap:var(--space-2);}
+    .route-summary-name{font-family:var(--font-display);font-size:16px;font-weight:700;color:#fff;}
+    .route-summary-meta{display:flex;align-items:center;gap:var(--space-4);font-size:13px;color:rgba(255,255,255,0.8);flex-wrap:wrap;}
+    .route-summary-meta span{display:flex;align-items:center;gap:4px;}
+    /* Section header */
+    .section-header{display:flex;align-items:center;gap:var(--space-3);padding:var(--space-1) 0;}
+    .section-title{font-size:12px;font-weight:700;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:1.5px;white-space:nowrap;}
+    .section-line{flex:1;height:1px;background:var(--color-border);}
+    /* Visit list */
+    .visit-list{background:var(--color-surface);border-radius:var(--radius-md);overflow:hidden;box-shadow:var(--shadow-card);}
+    .visit-item{display:flex;align-items:center;gap:var(--space-3);padding:var(--space-3) var(--space-4);border-bottom:1px solid var(--color-border);}
+    .visit-item:last-child{border-bottom:none;}
+    .visit-icon{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+    .visit-icon.checked{background:#E8F5E9;}
+    .visit-icon.checked svg{width:16px;height:16px;color:var(--color-success);}
+    .visit-time{font-size:13px;font-weight:700;color:var(--color-text-primary);min-width:44px;text-align:center;}
+    .visit-name{font-size:13px;color:var(--color-text-secondary);flex:1;}
+    /* Sync status */
+    .sync-card{background:var(--color-surface);border-radius:var(--radius-md);padding:var(--space-4);box-shadow:var(--shadow-card);display:flex;align-items:center;gap:var(--space-3);}
+    .sync-icon{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+    .sync-icon.pending{background:#FEF9E7;}
+    .sync-icon.pending svg{width:20px;height:20px;color:var(--color-warning);}
+    .sync-icon.done{background:#E8F5E9;}
+    .sync-icon.done svg{width:20px;height:20px;color:var(--color-success);}
+    .sync-icon.syncing{background:#EBF5FB;}
+    .sync-icon.syncing svg{width:20px;height:20px;color:var(--color-info);}
+    .sync-info{flex:1;}
+    .sync-status{font-size:14px;font-weight:700;color:var(--color-text-primary);margin-bottom:2px;}
+    .sync-sub{font-size:12px;color:var(--color-text-muted);}
+    .sync-spinner{width:20px;height:20px;border:2px solid var(--color-border);border-top-color:var(--color-info);border-radius:50%;animation:spin 800ms linear infinite;}
+    @keyframes spin{to{transform:rotate(360deg);}}
+    /* Offline note */
+    .offline-note{background:#FFF8E1;border:1px solid #F9E79F;border-radius:var(--radius-md);padding:var(--space-3) var(--space-4);font-size:12px;color:#7D6608;line-height:1.5;display:flex;align-items:flex-start;gap:var(--space-2);}
+    .offline-note svg{flex-shrink:0;margin-top:1px;}
+    /* Primary action button */
+    .primary-btn{background:linear-gradient(135deg,var(--color-primary),var(--color-primary-dark));border:none;border-radius:var(--radius-lg);padding:var(--space-4) var(--space-5);width:100%;display:flex;align-items:center;justify-content:center;gap:var(--space-3);cursor:pointer;font-family:var(--font-body);font-size:16px;font-weight:700;color:#fff;transition:transform var(--transition-fast),box-shadow var(--transition-fast);box-shadow:0 4px 16px rgba(45,106,79,0.35);}
+    .primary-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(45,106,79,0.45);}
+    .primary-btn:active{transform:scale(0.98);}
+    .primary-btn svg{width:20px;height:20px;}
+    /* Footer */
+    .footer{flex-shrink:0;background:var(--color-surface);border-top:1px solid var(--color-border);padding:var(--space-3) var(--space-4);}
+    .footer-entry{display:flex;align-items:center;justify-content:space-between;padding:var(--space-3) var(--space-4);border-radius:var(--radius-md);cursor:pointer;transition:background var(--transition-fast);}
+    .footer-entry:hover{background:#F0EDE8;}
+    .footer-entry-left{display:flex;align-items:center;gap:var(--space-3);}
+    .footer-entry-icon{width:36px;height:36px;background:#FFF8E1;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+    .footer-entry-icon svg{width:18px;height:18px;color:var(--color-accent);}
+    .footer-entry-label{font-size:14px;font-weight:600;color:var(--color-text-primary);}
+    .footer-entry-sub{font-size:12px;color:var(--color-text-muted);margin-top:1px;}
+    .info-icon-btn{width:28px;height:28px;border:none;background:transparent;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--color-text-muted);transition:color var(--transition-fast);}
+    .info-icon-btn:hover{color:var(--color-primary);}
+    .info-icon-btn svg{width:16px;height:16px;}
+    /* Confirmation overlay */
+    .overlay{position:absolute;inset:0;background:var(--color-overlay);z-index:200;display:flex;justify-content:center;align-items:center;padding:var(--space-6);}
+    .overlay-card{background:var(--color-surface);border-radius:var(--radius-xl);padding:var(--space-6);width:100%;max-width:300px;text-align:center;box-shadow:var(--shadow-elevated);animation:slideUp 300ms ease;}
+    @keyframes slideUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+    .overlay-title{font-family:var(--font-display);font-size:18px;font-weight:700;color:var(--color-text-primary);margin-bottom:var(--space-2);}
+    .overlay-msg{font-size:14px;color:var(--color-text-secondary);margin-bottom:var(--space-5);line-height:1.5;}
+    .overlay-actions{display:flex;gap:var(--space-3);}
+    .btn-sm{border:none;border-radius:var(--radius-md);padding:var(--space-3) var(--space-4);font-family:var(--font-body);font-size:14px;font-weight:700;cursor:pointer;transition:all var(--transition-fast);flex:1;}
+    .btn-primary{background:var(--color-primary);color:#fff;}
+    .btn-primary:hover{background:var(--color-primary-dark);}
+    .btn-outline{background:transparent;color:var(--color-primary);border:2px solid var(--color-primary);}
+    .btn-outline:hover{background:#E8F5E9;}
+    .caption{width:375px;color:rgba(255,255,255,0.6);font-size:12px;line-height:1.6;padding-top:var(--space-2);}
+    .caption h3{color:#fff;font-size:14px;font-weight:600;margin-bottom:var(--space-3);letter-spacing:0.3px;}
+    .caption ul{list-style:none;display:flex;flex-direction:column;gap:var(--space-2);}
+    .caption li::before{content:'• ';color:var(--color-primary-light);}
+    .caption .tag{display:inline-block;background:rgba(45,106,79,0.3);color:#74C69D;font-size:10px;padding:1px 6px;border-radius:4px;margin-left:4px;font-family:monospace;}
+    .caption .tag.alt{background:rgba(212,160,23,0.3);color:var(--color-accent-light);}
+  </style>
+</head>
+<body>
+
+<!-- ============================================================
+     SCR-M02-003 — VI — Completed + Sync pending
+     ============================================================ -->
+<div>
+  <div class="phone-frame">
+    <div class="status-bar">
+      <span class="status-bar-left">11:25</span>
+      <span class="status-bar-right">
+        <svg width="16" height="12" viewBox="0 0 16 12" fill="white"><rect x="0" y="7" width="2" height="5" rx="0.5"/><rect x="3.5" y="5" width="2" height="7" rx="0.5"/><rect x="7" y="3" width="2" height="9" rx="0.5"/><rect x="10.5" y="0" width="2" height="12" rx="0.5"/></svg>
+        <svg width="14" height="12" viewBox="0 0 14 12" fill="white"><path d="M7 10.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/><path d="M4.93 8.07a4 4 0 0 1 4.14 0" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M2.29 5.64a7 7 0 0 1 9.42 0" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
+        <div class="battery-icon"><svg viewBox="0 0 22 12" fill="none"><rect x="0.5" y="0.5" width="19" height="11" rx="2.5" stroke="white" stroke-opacity="0.9"/><rect x="2" y="2" width="10" height="8" rx="1.5" fill="#74C69D"/><rect x="20" y="4" width="1.5" height="4" rx="0.75" fill="white"/></svg></div>
+      </span>
+    </div>
+    <div class="header">
+      <button class="header-back" aria-label="Quay lại">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M12 4l-6 6 6 6" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="header-title">Kết thúc phiên</div>
+      <button class="lang-toggle">VI</button>
+    </div>
+    <div class="content">
+      <!-- Celebration -->
+      <div class="celebration">
+        <div class="celebration-icon">
+          <svg viewBox="0 0 36 36" fill="none"><path d="M18 4l3.5 7.5L30 13.5l-6 6 1.5 8.5L18 24l-7.5 4 1.5-8.5-6-6 8.5-2L18 4z" fill="white"/></svg>
+        </div>
+        <div class="celebration-title">Chúc mừng bạn đã<br>hoàn thành hành trình!</div>
+      </div>
+      <!-- Route summary -->
+      <div class="route-summary">
+        <div class="route-summary-name">Tuyến Rừng Nguyên Sinh</div>
+        <div class="route-summary-meta">
+          <span><svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="10" cy="10" r="8"/><path stroke-linecap="round" d="M10 6v4l3 2"/></svg>5 checkpoint đã khám phá</span>
+          <span>Thời gian: 09:00 – 11:20</span>
+        </div>
+      </div>
+      <!-- Check-in summary header -->
+      <div class="section-header">
+        <span class="section-title">Chi tiết check-in</span>
+        <div class="section-line"></div>
+      </div>
+      <!-- Visit list -->
+      <div class="visit-list">
+        <div class="visit-item">
+          <div class="visit-icon checked"><svg viewBox="0 0 20 20" fill="none"><path d="M5 10l4 4 6-7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="visit-time">09:15</div>
+          <div class="visit-name">Tuyến Rừng Nguyên Sinh</div>
+        </div>
+        <div class="visit-item">
+          <div class="visit-icon checked"><svg viewBox="0 0 20 20" fill="none"><path d="M5 10l4 4 6-7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="visit-time">09:40</div>
+          <div class="visit-name">Thác Nước Trong Rừng</div>
+        </div>
+        <div class="visit-item">
+          <div class="visit-icon checked"><svg viewBox="0 0 20 20" fill="none"><path d="M5 10l4 4 6-7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="visit-time">10:05</div>
+          <div class="visit-name">Rừng Cổ Thụ</div>
+        </div>
+        <div class="visit-item">
+          <div class="visit-icon checked"><svg viewBox="0 0 20 20" fill="none"><path d="M5 10l4 4 6-7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="visit-time">10:40</div>
+          <div class="visit-name">Điểm Ngắm Cảnh</div>
+        </div>
+        <div class="visit-item">
+          <div class="visit-icon checked"><svg viewBox="0 0 20 20" fill="none"><path d="M5 10l4 4 6-7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="visit-time">11:20</div>
+          <div class="visit-name">Trạm Cuối</div>
+        </div>
+      </div>
+      <!-- Sync status header -->
+      <div class="section-header">
+        <span class="section-title">Trạng thái đồng bộ</span>
+        <div class="section-line"></div>
+      </div>
+      <!-- Sync pending card -->
+      <div class="sync-card">
+        <div class="sync-icon pending">
+          <svg viewBox="0 0 20 20" fill="none"><path d="M10 3v4l3 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M17 10a7 7 0 11-3-5.7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </div>
+        <div class="sync-info">
+          <div class="sync-status">⚠️ Chưa đồng bộ</div>
+          <div class="sync-sub">Sẽ gửi khi có kết nối mạng</div>
+        </div>
+      </div>
+      <!-- Offline reassurance note -->
+      <div class="offline-note">
+        <svg width="14" height="14" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8" stroke="#D4A017" stroke-width="2"/><path d="M10 6v4M10 14h.01" stroke="#D4A017" stroke-width="2" stroke-linecap="round"/></svg>
+        Phiên của bạn được lưu cục bộ. Dữ liệu sẽ được gửi khi có mạng. Không lo mất dữ liệu.
+      </div>
+      <!-- Primary action -->
+      <button class="primary-btn">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M5 10h10M5 6h10M5 14h7"/></svg>
+        Quay lại chọn tuyến mới
+      </button>
+      <div style="height:4px;"></div>
+    </div>
+    <div class="footer">
+      <div class="footer-entry">
+        <div class="footer-entry-left">
+          <div class="footer-entry-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 15V3"/></svg></div>
+          <div>
+            <div class="footer-entry-label">Tài nguyên offline</div>
+            <div class="footer-entry-sub">2 tuyến đã tải</div>
+          </div>
+        </div>
+        <button class="info-icon-btn"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 16v-4M12 8h.01"/></svg></button>
+      </div>
+    </div>
+  </div>
+  <div class="caption">
+    <h3>SCR-M02-003 — Sync pending <span class="tag">VI</span></h3>
+    <ul>
+      <li><strong>E-04</strong> Congratulations message</li>
+      <li><strong>E-05</strong> Route summary — 5 checkpoints, time window</li>
+      <li><strong>E-07..E-08</strong> Visit list in checkedInAt order (not sequence order)</li>
+      <li><strong>E-12</strong> Sync pending — offline note (E-13) shown</li>
+      <li><strong>E-14</strong> Primary action — clears SelectedRouteContext → M01</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============================================================
+     SCR-M02-003 — VI — Confirmation overlay variant
+     ============================================================ -->
+<div>
+  <div class="phone-frame">
+    <div class="status-bar">
+      <span class="status-bar-left">11:20</span>
+      <span class="status-bar-right">
+        <svg width="16" height="12" viewBox="0 0 16 12" fill="white"><rect x="0" y="7" width="2" height="5" rx="0.5"/><rect x="3.5" y="5" width="2" height="7" rx="0.5"/><rect x="7" y="3" width="2" height="9" rx="0.5"/><rect x="10.5" y="0" width="2" height="12" rx="0.5"/></svg>
+        <svg width="14" height="12" viewBox="0 0 14 12" fill="white"><path d="M7 10.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/><path d="M4.93 8.07a4 4 0 0 1 4.14 0" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M2.29 5.64a7 7 0 0 1 9.42 0" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
+        <div class="battery-icon"><svg viewBox="0 0 22 12" fill="none"><rect x="0.5" y="0.5" width="19" height="11" rx="2.5" stroke="white" stroke-opacity="0.9"/><rect x="2" y="2" width="14" height="8" rx="1.5" fill="white"/><rect x="20" y="4" width="1.5" height="4" rx="0.75" fill="white"/></svg></div>
+      </span>
+    </div>
+    <div class="header">
+      <button class="header-back"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M12 4l-6 6 6 6" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="header-title">Kết thúc phiên</div>
+      <button class="lang-toggle">VI</button>
+    </div>
+    <div class="content" style="opacity:0.5;pointer-events:none;">
+      <div class="celebration">
+        <div class="celebration-icon"><svg viewBox="0 0 36 36" fill="none"><path d="M18 4l3.5 7.5L30 13.5l-6 6 1.5 8.5L18 24l-7.5 4 1.5-8.5-6-6 8.5-2L18 4z" fill="white"/></svg></div>
+        <div class="celebration-title">Chúc mừng bạn đã<br>hoàn thành hành trình!</div>
+      </div>
+      <div class="route-summary">
+        <div class="route-summary-name">Tuyến Rừng Nguyên Sinh</div>
+        <div class="route-summary-meta"><span>5 checkpoint đã khám phá</span><span>Thời gian: 09:00 – 11:20</span></div>
+      </div>
+      <div class="section-header"><span class="section-title">Chi tiết check-in</span><div class="section-line"></div></div>
+      <div class="visit-list">
+        <div class="visit-item"><div class="visit-icon checked"><svg viewBox="0 0 20 20" fill="none"><path d="M5 10l4 4 6-7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="visit-time">09:15</div><div class="visit-name">Tuyến Rừng Nguyên Sinh</div></div>
+        <div class="visit-item"><div class="visit-icon checked"><svg viewBox="0 0 20 20" fill="none"><path d="M5 10l4 4 6-7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="visit-time">09:40</div><div class="visit-name">Thác Nước Trong Rừng</div></div>
+        <div class="visit-item"><div class="visit-icon checked"><svg viewBox="0 0 20 20" fill="none"><path d="M5 10l4 4 6-7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="visit-time">10:05</div><div class="visit-name">Rừng Cổ Thụ</div></div>
+        <div class="visit-item"><div class="visit-icon checked"><svg viewBox="0 0 20 20" fill="none"><path d="M5 10l4 4 6-7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="visit-time">10:40</div><div class="visit-name">Điểm Ngắm Cảnh</div></div>
+        <div class="visit-item"><div class="visit-icon checked"><svg viewBox="0 0 20 20" fill="none"><path d="M5 10l4 4 6-7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="visit-time">11:20</div><div class="visit-name">Trạm Cuối</div></div>
+      </div>
+      <div class="section-header"><span class="section-title">Trạng thái đồng bộ</span><div class="section-line"></div></div>
+      <div class="sync-card">
+        <div class="sync-icon pending"><svg viewBox="0 0 20 20" fill="none"><path d="M10 3v4l3 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M17 10a7 7 0 11-3-5.7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
+        <div class="sync-info"><div class="sync-status">⚠️ Chưa đồng bộ</div><div class="sync-sub">Sẽ gửi khi có kết nối mạng</div></div>
+      </div>
+      <div class="offline-note"><svg width="14" height="14" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8" stroke="#D4A017" stroke-width="2"/><path d="M10 6v4M10 14h.01" stroke="#D4A017" stroke-width="2" stroke-linecap="round"/></svg>Phiên của bạn được lưu cục bộ. Dữ liệu sẽ được gửi khi có mạng.</div>
+      <button class="primary-btn">Quay lại chọn tuyến mới</button>
+      <div style="height:4px;"></div>
+    </div>
+    <!-- Confirmation overlay -->
+    <div class="overlay">
+      <div class="overlay-card">
+        <div class="overlay-title">Xác nhận kết thúc phiên</div>
+        <div class="overlay-msg">Bạn đã khám phá <strong>5/5</strong> checkpoint.<br>Kết thúc phiên này?</div>
+        <div class="overlay-actions">
+          <button class="btn-sm btn-outline">Hủy</button>
+          <button class="btn-sm btn-primary">Xác nhận</button>
+        </div>
+      </div>
+    </div>
+    <div class="footer" style="opacity:0.5;pointer-events:none;">
+      <div class="footer-entry">
+        <div class="footer-entry-left"><div class="footer-entry-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 15V3"/></svg></div><div><div class="footer-entry-label">Tài nguyên offline</div><div class="footer-entry-sub">2 tuyến đã tải</div></div></div>
+        <button class="info-icon-btn"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 16v-4M12 8h.01"/></svg></button>
+      </div>
+    </div>
+  </div>
+  <div class="caption">
+    <h3>SCR-M02-003 — Confirmation overlay <span class="tag">VI</span></h3>
+    <ul>
+      <li><strong>E-16</strong> Confirmation modal — "Bạn đã khám phá 5/5 checkpoint. Kết thúc phiên này?"</li>
+      <li>Background dims — focus trapped inside modal (role="dialog")</li>
+      <li>[Hủy] → closes overlay, stays on SCR-M02-001</li>
+      <li>[Xác nhận] → triggers HOAN_TAT → navigate to completed state above</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============================================================
+     SCR-M02-003 — VI — Sync in progress + Sync done variants
+     ============================================================ -->
+<div>
+  <div class="phone-frame">
+    <div class="status-bar">
+      <span class="status-bar-left">11:25</span>
+      <span class="status-bar-right">
+        <svg width="16" height="12" viewBox="0 0 16 12" fill="white"><rect x="0" y="7" width="2" height="5" rx="0.5"/><rect x="3.5" y="5" width="2" height="7" rx="0.5"/><rect x="7" y="3" width="2" height="9" rx="0.5"/><rect x="10.5" y="0" width="2" height="12" rx="0.5"/></svg>
+        <svg width="14" height="12" viewBox="0 0 14 12" fill="white"><path d="M7 10.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/><path d="M4.93 8.07a4 4 0 0 1 4.14 0" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M2.29 5.64a7 7 0 0 1 9.42 0" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
+        <div class="battery-icon"><svg viewBox="0 0 22 12" fill="none"><rect x="0.5" y="0.5" width="19" height="11" rx="2.5" stroke="white" stroke-opacity="0.9"/><rect x="2" y="2" width="10" height="8" rx="1.5" fill="#74C69D"/><rect x="20" y="4" width="1.5" height="4" rx="0.75" fill="white"/></svg></div>
+      </span>
+    </div>
+    <div class="header">
+      <button class="header-back"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M12 4l-6 6 6 6" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="header-title">Kết thúc phiên</div>
+      <button class="lang-toggle">VI</button>
+    </div>
+    <div class="content">
+      <div class="celebration">
+        <div class="celebration-icon"><svg viewBox="0 0 36 36" fill="none"><path d="M18 4l3.5 7.5L30 13.5l-6 6 1.5 8.5L18 24l-7.5 4 1.5-8.5-6-6 8.5-2L18 4z" fill="white"/></svg></div>
+        <div class="celebration-title">Chúc mừng bạn đã<br>hoàn thành hành trình!</div>
+      </div>
+      <div class="route-summary">
+        <div class="route-summary-name">Tuyến Rừng Nguyên Sinh</div>
+        <div class="route-summary-meta"><span>5 checkpoint đã khám phá</span><span>Thời gian: 09:00 – 11:20</span></div>
+      </div>
+      <div class="section-header"><span class="section-title">Chi tiết check-in</span><div class="section-line"></div></div>
+      <div class="visit-list">
+        <div class="visit-item"><div class="visit-icon checked"><svg viewBox="0 0 20 20" fill="none"><path d="M5 10l4 4 6-7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="visit-time">09:15</div><div class="visit-name">Tuyến Rừng Nguyên Sinh</div></div>
+        <div class="visit-item"><div class="visit-icon checked"><svg viewBox="0 0 20 20" fill="none"><path d="M5 10l4 4 6-7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="visit-time">09:40</div><div class="visit-name">Thác Nước Trong Rừng</div></div>
+        <div class="visit-item"><div class="visit-icon checked"><svg viewBox="0 0 20 20" fill="none"><path d="M5 10l4 4 6-7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="visit-time">10:05</div><div class="visit-name">Rừng Cổ Thụ</div></div>
+        <div class="visit-item"><div class="visit-icon checked"><svg viewBox="0 0 20 20" fill="none"><path d="M5 10l4 4 6-7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="visit-time">10:40</div><div class="visit-name">Điểm Ngắm Cảnh</div></div>
+        <div class="visit-item"><div class="visit-icon checked"><svg viewBox="0 0 20 20" fill="none"><path d="M5 10l4 4 6-7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="visit-time">11:20</div><div class="visit-name">Trạm Cuối</div></div>
+      </div>
+      <div class="section-header"><span class="section-title">Trạng thái đồng bộ</span><div class="section-line"></div></div>
+      <!-- SYNC IN PROGRESS -->
+      <div class="sync-card">
+        <div class="sync-icon syncing">
+          <div class="sync-spinner"></div>
+        </div>
+        <div class="sync-info">
+          <div class="sync-status">🟡 Đang đồng bộ...</div>
+          <div class="sync-sub">Gửi dữ liệu lên máy chủ</div>
+        </div>
+      </div>
+      <!-- Offline note hidden when syncing -->
+      <button class="primary-btn">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M5 10h10M5 6h10M5 14h7"/></svg>
+        Quay lại chọn tuyến mới
+      </button>
+      <div style="height:4px;"></div>
+    </div>
+    <div class="footer">
+      <div class="footer-entry">
+        <div class="footer-entry-left"><div class="footer-entry-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 15V3"/></svg></div><div><div class="footer-entry-label">Tài nguyên offline</div><div class="footer-entry-sub">2 tuyến đã tải</div></div></div>
+        <button class="info-icon-btn"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 16v-4M12 8h.01"/></svg></button>
+      </div>
+    </div>
+  </div>
+  <div class="caption">
+    <h3>SCR-M02-003 — Sync in progress <span class="tag">VI</span></h3>
+    <ul>
+      <li><strong>E-10</strong> Sync in progress — spinner + "Đang đồng bộ..."</li>
+      <li>Offline note (E-13) hidden while syncing — SR-SCR-M02-003-003</li>
+      <li>Sync does NOT block end screen — user can still navigate away</li>
+      <li>On success: replaces with E-11 "✅ Đã đồng bộ" + syncedAt timestamp</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============================================================
+     SCR-M02-003 — EN — Sync done variant
+     ============================================================ -->
+<div>
+  <div class="phone-frame">
+    <div class="status-bar">
+      <span class="status-bar-left">11:25</span>
+      <span class="status-bar-right">
+        <svg width="16" height="12" viewBox="0 0 16 12" fill="white"><rect x="0" y="7" width="2" height="5" rx="0.5"/><rect x="3.5" y="5" width="2" height="7" rx="0.5"/><rect x="7" y="3" width="2" height="9" rx="0.5"/><rect x="10.5" y="0" width="2" height="12" rx="0.5"/></svg>
+        <svg width="14" height="12" viewBox="0 0 14 12" fill="white"><path d="M7 10.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/><path d="M4.93 8.07a4 4 0 0 1 4.14 0" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M2.29 5.64a7 7 0 0 1 9.42 0" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
+        <div class="battery-icon"><svg viewBox="0 0 22 12" fill="none"><rect x="0.5" y="0.5" width="19" height="11" rx="2.5" stroke="white" stroke-opacity="0.9"/><rect x="2" y="2" width="10" height="8" rx="1.5" fill="#74C69D"/><rect x="20" y="4" width="1.5" height="4" rx="0.75" fill="white"/></svg></div>
+      </span>
+    </div>
+    <div class="header">
+      <button class="header-back"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M12 4l-6 6 6 6" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="header-title" style="font-size:16px;">End Session</div>
+      <button class="lang-toggle" style="background:var(--color-accent);color:var(--color-primary-dark);">EN</button>
+    </div>
+    <div class="content">
+      <div class="celebration">
+        <div class="celebration-icon"><svg viewBox="0 0 36 36" fill="none"><path d="M18 4l3.5 7.5L30 13.5l-6 6 1.5 8.5L18 24l-7.5 4 1.5-8.5-6-6 8.5-2L18 4z" fill="white"/></svg></div>
+        <div class="celebration-title" style="font-size:18px;">Congratulations on completing<br>your journey!</div>
+      </div>
+      <div class="route-summary">
+        <div class="route-summary-name">Old-Growth Forest Trail</div>
+        <div class="route-summary-meta"><span>5 checkpoints explored</span><span>Duration: 09:00 – 11:20</span></div>
+      </div>
+      <div class="section-header"><span class="section-title" style="font-size:11px;">Check-in Details</span><div class="section-line"></div></div>
+      <div class="visit-list">
+        <div class="visit-item"><div class="visit-icon checked"><svg viewBox="0 0 20 20" fill="none"><path d="M5 10l4 4 6-7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="visit-time">09:15</div><div class="visit-name">Old-Growth Forest</div></div>
+        <div class="visit-item"><div class="visit-icon checked"><svg viewBox="0 0 20 20" fill="none"><path d="M5 10l4 4 6-7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="visit-time">09:40</div><div class="visit-name">Waterfall in the Forest</div></div>
+        <div class="visit-item"><div class="visit-icon checked"><svg viewBox="0 0 20 20" fill="none"><path d="M5 10l4 4 6-7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="visit-time">10:05</div><div class="visit-name">Ancient Trees</div></div>
+        <div class="visit-item"><div class="visit-icon checked"><svg viewBox="0 0 20 20" fill="none"><path d="M5 10l4 4 6-7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="visit-time">10:40</div><div class="visit-name">Scenic Viewpoint</div></div>
+        <div class="visit-item"><div class="visit-icon checked"><svg viewBox="0 0 20 20" fill="none"><path d="M5 10l4 4 6-7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="visit-time">11:20</div><div class="visit-name">End Station</div></div>
+      </div>
+      <div class="section-header"><span class="section-title" style="font-size:11px;">Sync Status</span><div class="section-line"></div></div>
+      <!-- SYNC DONE -->
+      <div class="sync-card">
+        <div class="sync-icon done">
+          <svg viewBox="0 0 20 20" fill="none"><path d="M5 10l4 4 6-7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="sync-info">
+          <div class="sync-status">✅ Synced</div>
+          <div class="sync-sub">11:25 — 11 Sep 2026</div>
+        </div>
+      </div>
+      <button class="primary-btn">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M5 10h10M5 6h10M5 14h7"/></svg>
+        Choose a New Route
+      </button>
+      <div style="height:4px;"></div>
+    </div>
+    <div class="footer">
+      <div class="footer-entry">
+        <div class="footer-entry-left"><div class="footer-entry-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 15V3"/></svg></div><div><div class="footer-entry-label">Offline Resources</div><div class="footer-entry-sub">2 routes downloaded</div></div></div>
+        <button class="info-icon-btn"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 16v-4M12 8h.01"/></svg></button>
+      </div>
+    </div>
+  </div>
+  <div class="caption">
+    <h3>SCR-M02-003 — Sync done <span class="tag alt">EN</span></h3>
+    <ul>
+      <li><strong>E-11</strong> Sync done — green checkmark + "Synced" + syncedAt timestamp</li>
+      <li>All content localized per <code>LanguagePreference.languageCode = "en"</code></li>
+      <li>Language toggle accent-colored to indicate EN active</li>
+      <li>Footer still navigates to SCR-M01-004 (offline resources)</li>
+    </ul>
+  </div>
+</div>
+
+</body>
+</html>

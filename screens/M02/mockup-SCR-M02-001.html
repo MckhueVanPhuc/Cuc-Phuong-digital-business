@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SCR-M02-001 — Phiên trải nghiệm — Mockup</title>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --color-primary:#2D6A4F;--color-primary-dark:#1B4332;--color-primary-light:#40916C;
+      --color-accent:#D4A017;--color-accent-light:#F4D03F;
+      --color-bg:#F5F3EE;--color-surface:#FFFFFF;--color-border:#E0DDD8;
+      --color-text-primary:#1C1C1C;--color-text-secondary:#5C5C5C;--color-text-muted:#9B9B9B;
+      --color-danger:#C0392B;--color-success:#27AE60;--color-warning:#E67E22;
+      --color-info:#2980B9;--color-overlay:rgba(27,67,50,0.6);
+      --font-display:'Playfair Display',Georgia,serif;--font-body:'Nunito',-apple-system,BlinkMacSystemFont,sans-serif;
+      --space-1:4px;--space-2:8px;--space-3:12px;--space-4:16px;--space-5:20px;--space-6:24px;--space-8:32px;--space-10:40px;
+      --radius-sm:6px;--radius-md:12px;--radius-lg:16px;--radius-xl:24px;
+      --shadow-card:0 2px 8px rgba(0,0,0,0.08),0 1px 2px rgba(0,0,0,0.04);
+      --shadow-elevated:0 8px 24px rgba(0,0,0,0.12),0 2px 6px rgba(0,0,0,0.06);
+      --transition-fast:150ms ease;--transition-normal:250ms ease;
+    }
+    body{font-family:var(--font-body);background:#1C1C1C;display:flex;justify-content:center;align-items:flex-start;min-height:100vh;padding:var(--space-6);gap:var(--space-6);}
+    .phone-frame{width:375px;height:812px;background:var(--color-bg);border-radius:44px;overflow:hidden;position:relative;box-shadow:0 0 0 1px rgba(255,255,255,0.1),0 32px 80px rgba(0,0,0,0.6),0 0 120px rgba(45,106,79,0.2);display:flex;flex-direction:column;}
+    .phone-frame::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:150px;height:30px;background:#000;border-radius:0 0 20px 20px;z-index:100;}
+    .status-bar{height:44px;background:var(--color-primary-dark);display:flex;justify-content:space-between;align-items:flex-end;padding:0 var(--space-6) 6px;color:#fff;font-size:12px;font-weight:600;letter-spacing:0.3px;flex-shrink:0;z-index:10;}
+    .status-bar-left{opacity:0.9;}
+    .status-bar-right{display:flex;gap:var(--space-2);align-items:center;}
+    .battery-icon{display:flex;align-items:center;gap:3px;}
+    .battery-icon svg{width:22px;height:12px;}
+    .header{background:var(--color-primary);padding:var(--space-3) var(--space-4) var(--space-4);display:flex;align-items:center;gap:var(--space-3);flex-shrink:0;position:relative;}
+    .header-back{width:40px;height:40px;border:none;background:rgba(255,255,255,0.15);border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background var(--transition-fast);flex-shrink:0;}
+    .header-back:hover{background:rgba(255,255,255,0.25);}
+    .header-back svg{color:#fff;}
+    .header-title{flex:1;text-align:center;font-family:var(--font-display);font-size:18px;font-weight:700;color:#fff;letter-spacing:0.3px;}
+    .lang-toggle{width:40px;height:40px;border:none;background:rgba(255,255,255,0.15);border-radius:var(--radius-sm);color:#fff;font-size:12px;font-weight:700;cursor:pointer;transition:background var(--transition-fast);flex-shrink:0;font-family:var(--font-body);}
+    .lang-toggle:hover{background:rgba(255,255,255,0.25);}
+    .content{flex:1;overflow-y:auto;padding:var(--space-4);display:flex;flex-direction:column;gap:var(--space-3);scrollbar-width:none;}
+    .content::-webkit-scrollbar{display:none;}
+    .route-info{background:linear-gradient(135deg,var(--color-primary) 0%,var(--color-primary-dark) 100%);border-radius:var(--radius-lg);padding:var(--space-4) var(--space-5);position:relative;overflow:hidden;}
+    .route-info::after{content:'';position:absolute;top:-20px;right:-20px;width:80px;height:80px;background:rgba(255,255,255,0.05);border-radius:50%;}
+    .route-info-name{font-family:var(--font-display);font-size:17px;font-weight:700;color:#fff;margin-bottom:4px;}
+    .route-info-meta{display:flex;align-items:center;gap:var(--space-3);font-size:12px;color:rgba(255,255,255,0.75);}
+    .route-info-meta span{display:flex;align-items:center;gap:4px;}
+    .section-header{display:flex;align-items:center;gap:var(--space-3);padding:var(--space-1) 0;}
+    .section-title{font-size:12px;font-weight:700;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:1.5px;white-space:nowrap;}
+    .section-line{flex:1;height:1px;background:var(--color-border);}
+    .progress-line{display:flex;align-items:center;gap:6px;padding:2px 0;}
+    .prog-dot{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;}
+    .prog-dot.checked{background:var(--color-success);color:#fff;}
+    .prog-dot.pending{background:var(--color-border);color:var(--color-text-muted);}
+    .prog-line{flex:1;height:2px;background:var(--color-border);}
+    .prog-line.filled{background:var(--color-success);}
+    .checkpoint-card{background:var(--color-surface);border-radius:var(--radius-md);padding:var(--space-3) var(--space-4);display:flex;align-items:center;gap:var(--space-3);cursor:pointer;box-shadow:var(--shadow-card);transition:transform var(--transition-fast),box-shadow var(--transition-fast);}
+    .checkpoint-card:hover{transform:translateY(-1px);box-shadow:var(--shadow-elevated);}
+    .checkpoint-card:active{transform:scale(0.98);}
+    .cp-dot{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;}
+    .cp-dot.checked{background:#E8F5E9;color:var(--color-success);}
+    .cp-dot.pending{background:#F0EDE8;color:var(--color-text-muted);}
+    .cp-content{flex:1;}
+    .cp-name{font-size:14px;font-weight:700;color:var(--color-text-primary);margin-bottom:2px;}
+    .cp-status{font-size:12px;}
+    .cp-status.done{color:var(--color-success);}
+    .cp-status.pending{color:var(--color-text-muted);}
+    .qr-btn{background:linear-gradient(135deg,var(--color-accent) 0%,#B8860B 100%);border:none;border-radius:var(--radius-lg);padding:var(--space-4) var(--space-5);width:100%;display:flex;align-items:center;justify-content:center;gap:var(--space-3);cursor:pointer;font-family:var(--font-body);font-size:16px;font-weight:700;color:var(--color-primary-dark);transition:transform var(--transition-fast),box-shadow var(--transition-fast);box-shadow:0 4px 16px rgba(212,160,23,0.4);}
+    .qr-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(212,160,23,0.5);}
+    .qr-btn:active{transform:scale(0.98);}
+    .qr-btn svg{width:24px;height:24px;}
+    .end-btn{background:var(--color-surface);border:2px solid var(--color-primary);border-radius:var(--radius-lg);padding:var(--space-3) var(--space-5);width:100%;display:flex;align-items:center;justify-content:center;gap:var(--space-2);cursor:pointer;font-family:var(--font-body);font-size:14px;font-weight:700;color:var(--color-primary);transition:all var(--transition-fast);}
+    .end-btn:disabled{opacity:0.4;cursor:not-allowed;}
+    .end-btn:not(:disabled):hover{background:var(--color-primary);color:#fff;}
+    .footer{flex-shrink:0;background:var(--color-surface);border-top:1px solid var(--color-border);padding:var(--space-3) var(--space-4);}
+    .footer-entry{display:flex;align-items:center;justify-content:space-between;padding:var(--space-3) var(--space-4);border-radius:var(--radius-md);cursor:pointer;transition:background var(--transition-fast);}
+    .footer-entry:hover{background:#F0EDE8;}
+    .footer-entry-left{display:flex;align-items:center;gap:var(--space-3);}
+    .footer-entry-icon{width:36px;height:36px;background:#FFF8E1;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+    .footer-entry-icon svg{width:18px;height:18px;color:var(--color-accent);}
+    .footer-entry-label{font-size:14px;font-weight:600;color:var(--color-text-primary);}
+    .footer-entry-sub{font-size:12px;color:var(--color-text-muted);margin-top:1px;}
+    .info-icon-btn{width:28px;height:28px;border:none;background:transparent;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--color-text-muted);transition:color var(--transition-fast);}
+    .info-icon-btn:hover{color:var(--color-primary);}
+    .info-icon-btn svg{width:16px;height:16px;}
+    /* Overlays */
+    .overlay{position:absolute;inset:0;background:var(--color-overlay);z-index:200;display:flex;justify-content:center;align-items:center;padding:var(--space-6);}
+    .overlay-card{background:var(--color-surface);border-radius:var(--radius-xl);padding:var(--space-6);width:100%;max-width:300px;text-align:center;box-shadow:var(--shadow-elevated);animation:slideUp 300ms ease;}
+    @keyframes slideUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+    .overlay-icon{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto var(--space-4);}
+    .overlay-icon.success{background:#E8F5E9;}
+    .overlay-icon.info{background:#EBF5FB;}
+    .overlay-icon.warning{background:#FEF9E7;}
+    .overlay-icon.error{background:#FDEDEC;}
+    .overlay-icon svg{width:28px;height:28px;}
+    .overlay-title{font-family:var(--font-display);font-size:18px;font-weight:700;color:var(--color-text-primary);margin-bottom:var(--space-2);}
+    .overlay-msg{font-size:14px;color:var(--color-text-secondary);margin-bottom:var(--space-5);line-height:1.5;}
+    .overlay-actions{display:flex;flex-direction:column;gap:var(--space-2);}
+    .btn-sm{border:none;border-radius:var(--radius-md);padding:var(--space-3) var(--space-4);font-family:var(--font-body);font-size:14px;font-weight:700;cursor:pointer;transition:all var(--transition-fast);width:100%;}
+    .btn-primary{background:var(--color-primary);color:#fff;}
+    .btn-primary:hover{background:var(--color-primary-dark);}
+    .btn-outline{background:transparent;color:var(--color-primary);border:2px solid var(--color-primary);}
+    .btn-outline:hover{background:#E8F5E9;}
+    .btn-accent{background:var(--color-accent);color:var(--color-primary-dark);}
+    .btn-accent:hover{background:#B8860B;}
+    .caption{width:375px;color:rgba(255,255,255,0.6);font-size:12px;line-height:1.6;padding-top:var(--space-2);}
+    .caption h3{color:#fff;font-size:14px;font-weight:600;margin-bottom:var(--space-3);letter-spacing:0.3px;}
+    .caption ul{list-style:none;display:flex;flex-direction:column;gap:var(--space-2);}
+    .caption li::before{content:'• ';color:var(--color-primary-light);}
+    .caption .tag{display:inline-block;background:rgba(45,106,79,0.3);color:#74C69D;font-size:10px;padding:1px 6px;border-radius:4px;margin-left:4px;font-family:monospace;}
+    .caption .tag.alt{background:rgba(212,160,23,0.3);color:var(--color-accent-light);}
+    .two-col{display:flex;flex-direction:column;gap:var(--space-2);}
+    .banner{background:#FEF9E7;border:1px solid var(--color-warning);border-radius:var(--radius-md);padding:var(--space-3) var(--space-4);display:flex;align-items:flex-start;gap:var(--space-3);}
+    .banner-icon{flex-shrink:0;color:var(--color-warning);}
+    .banner-text{font-size:13px;color:var(--color-text-secondary);line-height:1.4;}
+  </style>
+</head>
+<body>
+
+<!-- ============================================================
+     SCR-M02-001 — VI — Active session with 2/5 checked in
+     ============================================================ -->
+<div>
+  <div class="phone-frame">
+    <!-- Status bar -->
+    <div class="status-bar">
+      <span class="status-bar-left">9:41</span>
+      <span class="status-bar-right">
+        <svg width="16" height="12" viewBox="0 0 16 12" fill="white"><rect x="0" y="7" width="2" height="5" rx="0.5"/><rect x="3.5" y="5" width="2" height="7" rx="0.5"/><rect x="7" y="3" width="2" height="9" rx="0.5"/><rect x="10.5" y="0" width="2" height="12" rx="0.5"/></svg>
+        <svg width="14" height="12" viewBox="0 0 14 12" fill="white"><path d="M7 10.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/><path d="M4.93 8.07a4 4 0 0 1 4.14 0" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M2.29 5.64a7 7 0 0 1 9.42 0" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
+        <div class="battery-icon"><svg viewBox="0 0 22 12" fill="none"><rect x="0.5" y="0.5" width="19" height="11" rx="2.5" stroke="white" stroke-opacity="0.9"/><rect x="2" y="2" width="14" height="8" rx="1.5" fill="white"/><rect x="20" y="4" width="1.5" height="4" rx="0.75" fill="white"/></svg></div>
+      </span>
+    </div>
+    <!-- Header -->
+    <div class="header">
+      <button class="header-back" aria-label="Quay lại">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M12 4l-6 6 6 6" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="header-title">Phiên trải nghiệm</div>
+      <button class="lang-toggle" aria-label="Chuyển ngôn ngữ">VI</button>
+    </div>
+    <!-- Content -->
+    <div class="content">
+      <!-- Route info -->
+      <div class="route-info">
+        <div class="route-info-name">Tuyến Rừng Nguyên Sinh</div>
+        <div class="route-info-meta">
+          <span><svg width="12" height="12" viewBox="0 0 20 20" fill="none" stroke="white" stroke-width="2"><path stroke-linecap="round" d="M10 18s-6-5.686-6-10a6 6 0 1 1 12 0c0 4.314-6 10-6 10z"/></svg>5 km</span>
+          <span><svg width="12" height="12" viewBox="0 0 20 20" fill="none" stroke="white" stroke-width="2"><circle cx="10" cy="10" r="8"/><path stroke-linecap="round" d="M10 6v4l3 2"/></svg>120 phút</span>
+          <span style="background:rgba(255,255,255,0.2);padding:1px 8px;border-radius:10px;font-size:11px;">Dễ</span>
+        </div>
+      </div>
+      <!-- Journey header -->
+      <div class="section-header">
+        <span class="section-title">Hành trình của bạn</span>
+        <div class="section-line"></div>
+      </div>
+      <!-- Progress line -->
+      <div class="progress-line">
+        <div class="prog-dot checked">1</div>
+        <div class="prog-line filled"></div>
+        <div class="prog-dot checked">2</div>
+        <div class="prog-line"></div>
+        <div class="prog-dot pending">3</div>
+        <div class="prog-line"></div>
+        <div class="prog-dot pending">4</div>
+        <div class="prog-line"></div>
+        <div class="prog-dot pending">5</div>
+      </div>
+      <!-- Checkpoint #1 — checked -->
+      <div class="checkpoint-card">
+        <div class="cp-dot checked">
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M5 10l4 4 6-7" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="cp-content">
+          <div class="cp-name">① Tuyến Rừng Nguyên Sinh</div>
+          <div class="cp-status done">✅ Đã khám phá lúc 09:15</div>
+        </div>
+      </div>
+      <!-- Checkpoint #2 — checked -->
+      <div class="checkpoint-card">
+        <div class="cp-dot checked">
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M5 10l4 4 6-7" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="cp-content">
+          <div class="cp-name">② Thác Nước Trong Rừng</div>
+          <div class="cp-status done">✅ Đã khám phá lúc 09:40</div>
+        </div>
+      </div>
+      <!-- Checkpoint #3 — pending -->
+      <div class="checkpoint-card">
+        <div class="cp-dot pending">③</div>
+        <div class="cp-content">
+          <div class="cp-name">③ Rừng Cổ Thụ</div>
+          <div class="cp-status pending">⬜ Chưa khám phá</div>
+        </div>
+      </div>
+      <!-- Checkpoint #4 — pending -->
+      <div class="checkpoint-card">
+        <div class="cp-dot pending">④</div>
+        <div class="cp-content">
+          <div class="cp-name">④ Điểm Ngắm Cảnh</div>
+          <div class="cp-status pending">⬜ Chưa khám phá</div>
+        </div>
+      </div>
+      <!-- Checkpoint #5 — pending -->
+      <div class="checkpoint-card">
+        <div class="cp-dot pending">⑤</div>
+        <div class="cp-content">
+          <div class="cp-name">⑤ Trạm Cuối</div>
+          <div class="cp-status pending">⬜ Chưa khám phá</div>
+        </div>
+      </div>
+      <!-- QR Scan button -->
+      <button class="qr-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M17.5 14.5v6M14.5 17.5h6"/></svg>
+        Quét mã QR
+      </button>
+      <!-- End button (disabled) -->
+      <button class="end-btn" disabled>
+        <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="10" cy="10" r="8"/><path stroke-linecap="round" d="M10 6v4l3 2"/></svg>
+        Kết thúc hành trình
+      </button>
+      <div style="height:4px;"></div>
+    </div><!-- /content -->
+    <!-- Footer -->
+    <div class="footer">
+      <div class="footer-entry">
+        <div class="footer-entry-left">
+          <div class="footer-entry-icon">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M3 6l18 0M3 14l18 0"/></svg>
+          </div>
+          <div>
+            <div class="footer-entry-label">Quay lại M01</div>
+          </div>
+        </div>
+        <button class="info-icon-btn"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 16v-4M12 8h.01"/></svg></button>
+      </div>
+    </div>
+  </div><!-- /phone-frame -->
+  <div class="caption">
+    <h3>SCR-M02-001 — Active session (2/5 checked) <span class="tag">VI</span></h3>
+    <ul>
+      <li><strong>E-06</strong> Progress line — filled dots = checked-in, hollow = pending</li>
+      <li><strong>E-07..E-11</strong> Checkpoint cards — tap → SCR-M02-002</li>
+      <li><strong>E-12</strong> QR button — accent yellow, prominent</li>
+      <li><strong>E-13</strong> End button — disabled (last checkpoint not checked-in yet)</li>
+      <li>5 checkpoints: ① checked 09:15, ② checked 09:40, ③–⑤ pending</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============================================================
+     SCR-M02-001 — VI — All checked in, ready to end
+     ============================================================ -->
+<div>
+  <div class="phone-frame">
+    <div class="status-bar">
+      <span class="status-bar-left">11:20</span>
+      <span class="status-bar-right">
+        <svg width="16" height="12" viewBox="0 0 16 12" fill="white"><rect x="0" y="7" width="2" height="5" rx="0.5"/><rect x="3.5" y="5" width="2" height="7" rx="0.5"/><rect x="7" y="3" width="2" height="9" rx="0.5"/><rect x="10.5" y="0" width="2" height="12" rx="0.5"/></svg>
+        <svg width="14" height="12" viewBox="0 0 14 12" fill="white"><path d="M7 10.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/><path d="M4.93 8.07a4 4 0 0 1 4.14 0" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M2.29 5.64a7 7 0 0 1 9.42 0" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
+        <div class="battery-icon"><svg viewBox="0 0 22 12" fill="none"><rect x="0.5" y="0.5" width="19" height="11" rx="2.5" stroke="white" stroke-opacity="0.9"/><rect x="2" y="2" width="10" height="8" rx="1.5" fill="#74C69D"/><rect x="20" y="4" width="1.5" height="4" rx="0.75" fill="white"/></svg></div>
+      </span>
+    </div>
+    <div class="header">
+      <button class="header-back"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M12 4l-6 6 6 6" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="header-title">Phiên trải nghiệm</div>
+      <button class="lang-toggle">VI</button>
+    </div>
+    <div class="content">
+      <div class="route-info">
+        <div class="route-info-name">Tuyến Rừng Nguyên Sinh</div>
+        <div class="route-info-meta">
+          <span>5 km</span><span>120 phút</span>
+          <span style="background:rgba(255,255,255,0.2);padding:1px 8px;border-radius:10px;font-size:11px;">Dễ</span>
+        </div>
+      </div>
+      <div class="section-header">
+        <span class="section-title">Hành trình của bạn</span>
+        <div class="section-line"></div>
+      </div>
+      <div class="progress-line">
+        <div class="prog-dot checked">1</div><div class="prog-line filled"></div>
+        <div class="prog-dot checked">2</div><div class="prog-line filled"></div>
+        <div class="prog-dot checked">3</div><div class="prog-line filled"></div>
+        <div class="prog-dot checked">4</div><div class="prog-line filled"></div>
+        <div class="prog-dot checked">5</div>
+      </div>
+      <div class="checkpoint-card">
+        <div class="cp-dot checked"><svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M5 10l4 4 6-7" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="cp-content"><div class="cp-name">① Tuyến Rừng Nguyên Sinh</div><div class="cp-status done">✅ Đã khám phá lúc 09:15</div></div>
+      </div>
+      <div class="checkpoint-card">
+        <div class="cp-dot checked"><svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M5 10l4 4 6-7" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="cp-content"><div class="cp-name">② Thác Nước Trong Rừng</div><div class="cp-status done">✅ Đã khám phá lúc 09:40</div></div>
+      </div>
+      <div class="checkpoint-card">
+        <div class="cp-dot checked"><svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M5 10l4 4 6-7" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="cp-content"><div class="cp-name">③ Rừng Cổ Thụ</div><div class="cp-status done">✅ Đã khám phá lúc 10:05</div></div>
+      </div>
+      <div class="checkpoint-card">
+        <div class="cp-dot checked"><svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M5 10l4 4 6-7" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="cp-content"><div class="cp-name">④ Điểm Ngắm Cảnh</div><div class="cp-status done">✅ Đã khám phá lúc 10:40</div></div>
+      </div>
+      <div class="checkpoint-card">
+        <div class="cp-dot checked"><svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M5 10l4 4 6-7" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="cp-content"><div class="cp-name">⑤ Trạm Cuối</div><div class="cp-status done">✅ Đã khám phá lúc 11:20</div></div>
+      </div>
+      <button class="qr-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M17.5 14.5v6M14.5 17.5h6"/></svg>
+        Quét mã QR
+      </button>
+      <!-- End button ENABLED -->
+      <button class="end-btn" style="background:var(--color-primary);color:#fff;border-color:var(--color-primary);">
+        <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="white" stroke-width="2"><circle cx="10" cy="10" r="8"/><path stroke-linecap="round" d="M10 6v4l3 2"/></svg>
+        Kết thúc hành trình
+      </button>
+      <div style="height:4px;"></div>
+    </div>
+    <div class="footer">
+      <div class="footer-entry">
+        <div class="footer-entry-left">
+          <div class="footer-entry-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M3 6l18 0M3 14l18 0"/></svg></div>
+          <div><div class="footer-entry-label">Quay lại M01</div></div>
+        </div>
+        <button class="info-icon-btn"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 16v-4M12 8h.01"/></svg></button>
+      </div>
+    </div>
+  </div>
+  <div class="caption">
+    <h3>SCR-M02-001 — All 5 checked in <span class="tag">VI</span></h3>
+    <ul>
+      <li>All 5 progress dots filled — <strong>E-13 End button now enabled</strong></li>
+      <li>Tap End → confirmation overlay → SCR-M02-003</li>
+      <li>QR button still active for revisiting checkpoints</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============================================================
+     SCR-M02-001 — VI — Scan result: Success
+     ============================================================ -->
+<div>
+  <div class="phone-frame">
+    <div class="status-bar">
+      <span class="status-bar-left">10:05</span>
+      <span class="status-bar-right">
+        <svg width="16" height="12" viewBox="0 0 16 12" fill="white"><rect x="0" y="7" width="2" height="5" rx="0.5"/><rect x="3.5" y="5" width="2" height="7" rx="0.5"/><rect x="7" y="3" width="2" height="9" rx="0.5"/><rect x="10.5" y="0" width="2" height="12" rx="0.5"/></svg>
+        <svg width="14" height="12" viewBox="0 0 14 12" fill="white"><path d="M7 10.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/><path d="M4.93 8.07a4 4 0 0 1 4.14 0" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M2.29 5.64a7 7 0 0 1 9.42 0" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
+        <div class="battery-icon"><svg viewBox="0 0 22 12" fill="none"><rect x="0.5" y="0.5" width="19" height="11" rx="2.5" stroke="white" stroke-opacity="0.9"/><rect x="2" y="2" width="12" height="8" rx="1.5" fill="white"/><rect x="20" y="4" width="1.5" height="4" rx="0.75" fill="white"/></svg></div>
+      </span>
+    </div>
+    <div class="header">
+      <button class="header-back"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M12 4l-6 6 6 6" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="header-title">Phiên trải nghiệm</div>
+      <button class="lang-toggle">VI</button>
+    </div>
+    <div class="content" style="opacity:0.5;pointer-events:none;">
+      <div class="route-info">
+        <div class="route-info-name">Tuyến Rừng Nguyên Sinh</div>
+        <div class="route-info-meta"><span>5 km</span><span>120 phút</span><span style="background:rgba(255,255,255,0.2);padding:1px 8px;border-radius:10px;font-size:11px;">Dễ</span></div>
+      </div>
+      <div class="section-header"><span class="section-title">Hành trình của bạn</span><div class="section-line"></div></div>
+      <div class="progress-line">
+        <div class="prog-dot checked">1</div><div class="prog-line filled"></div>
+        <div class="prog-dot checked">2</div><div class="prog-line filled"></div>
+        <div class="prog-dot pending">3</div><div class="prog-line"></div>
+        <div class="prog-dot pending">4</div><div class="prog-line"></div>
+        <div class="prog-dot pending">5</div>
+      </div>
+      <div class="checkpoint-card"><div class="cp-dot checked"><svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M5 10l4 4 6-7" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="cp-content"><div class="cp-name">① Tuyến Rừng Nguyên Sinh</div><div class="cp-status done">✅ Đã khám phá lúc 09:15</div></div></div>
+      <div class="checkpoint-card"><div class="cp-dot checked"><svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M5 10l4 4 6-7" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="cp-content"><div class="cp-name">② Thác Nước Trong Rừng</div><div class="cp-status done">✅ Đã khám phá lúc 09:40</div></div></div>
+      <div class="checkpoint-card"><div class="cp-dot pending">③</div><div class="cp-content"><div class="cp-name">③ Rừng Cổ Thụ</div><div class="cp-status pending">⬜ Chưa khám phá</div></div></div>
+      <div class="checkpoint-card"><div class="cp-dot pending">④</div><div class="cp-content"><div class="cp-name">④ Điểm Ngắm Cảnh</div><div class="cp-status pending">⬜ Chưa khám phá</div></div></div>
+      <div class="checkpoint-card"><div class="cp-dot pending">⑤</div><div class="cp-content"><div class="cp-name">⑤ Trạm Cuối</div><div class="cp-status pending">⬜ Chưa khám phá</div></div></div>
+      <button class="qr-btn" style="opacity:0.5;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M17.5 14.5v6M14.5 17.5h6"/></svg>Quét mã QR</button>
+      <button class="end-btn" disabled>Kết thúc hành trình</button>
+      <div style="height:4px;"></div>
+    </div>
+    <!-- Scan success overlay -->
+    <div class="overlay">
+      <div class="overlay-card">
+        <div class="overlay-icon success">
+          <svg viewBox="0 0 28 28" fill="none"><path d="M7 14l5 5 9-10" stroke="#27AE60" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="overlay-title">Check-in thành công!</div>
+        <div class="overlay-msg">Bạn đã check-in tại<br><strong>"Rừng Cổ Thụ"</strong></div>
+        <div class="overlay-actions two-col">
+          <button class="btn-sm btn-primary">Xem nội dung trạm</button>
+          <button class="btn-sm btn-outline">Quay lại bản đồ</button>
+        </div>
+      </div>
+    </div>
+    <div class="footer" style="opacity:0.5;pointer-events:none;">
+      <div class="footer-entry">
+        <div class="footer-entry-left"><div class="footer-entry-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M3 6l18 0M3 14l18 0"/></svg></div><div><div class="footer-entry-label">Quay lại M01</div></div></div>
+        <button class="info-icon-btn"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 16v-4M12 8h.01"/></svg></button>
+      </div>
+    </div>
+  </div>
+  <div class="caption">
+    <h3>SCR-M02-001 — Scan result: Success <span class="tag">VI</span></h3>
+    <ul>
+      <li><strong>E-16</strong> Scan result — success overlay (FR-M02-007)</li>
+      <li>Background dimmed (overlay); backdrop dims main content</li>
+      <li><em>Xem nội dung trạm</em> → SCR-M02-002</li>
+      <li><em>Quay lại bản đồ</em> → closes overlay, progress updates to 3/5</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============================================================
+     SCR-M02-001 — EN — Active session
+     ============================================================ -->
+<div>
+  <div class="phone-frame">
+    <div class="status-bar">
+      <span class="status-bar-left">9:41</span>
+      <span class="status-bar-right">
+        <svg width="16" height="12" viewBox="0 0 16 12" fill="white"><rect x="0" y="7" width="2" height="5" rx="0.5"/><rect x="3.5" y="5" width="2" height="7" rx="0.5"/><rect x="7" y="3" width="2" height="9" rx="0.5"/><rect x="10.5" y="0" width="2" height="12" rx="0.5"/></svg>
+        <svg width="14" height="12" viewBox="0 0 14 12" fill="white"><path d="M7 10.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/><path d="M4.93 8.07a4 4 0 0 1 4.14 0" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M2.29 5.64a7 7 0 0 1 9.42 0" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
+        <div class="battery-icon"><svg viewBox="0 0 22 12" fill="none"><rect x="0.5" y="0.5" width="19" height="11" rx="2.5" stroke="white" stroke-opacity="0.9"/><rect x="2" y="2" width="14" height="8" rx="1.5" fill="white"/><rect x="20" y="4" width="1.5" height="4" rx="0.75" fill="white"/></svg></div>
+      </span>
+    </div>
+    <div class="header">
+      <button class="header-back"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M12 4l-6 6 6 6" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="header-title" style="font-size:16px;">Journey Session</div>
+      <button class="lang-toggle" style="background:var(--color-accent);color:var(--color-primary-dark);">EN</button>
+    </div>
+    <div class="content">
+      <div class="route-info">
+        <div class="route-info-name">Old-Growth Forest Trail</div>
+        <div class="route-info-meta">
+          <span>5 km</span><span>120 min</span>
+          <span style="background:rgba(255,255,255,0.2);padding:1px 8px;border-radius:10px;font-size:11px;">Easy</span>
+        </div>
+      </div>
+      <div class="section-header">
+        <span class="section-title">Your Journey</span>
+        <div class="section-line"></div>
+      </div>
+      <div class="progress-line">
+        <div class="prog-dot checked">1</div><div class="prog-line filled"></div>
+        <div class="prog-dot pending">2</div><div class="prog-line"></div>
+        <div class="prog-dot pending">3</div><div class="prog-line"></div>
+        <div class="prog-dot pending">4</div><div class="prog-line"></div>
+        <div class="prog-dot pending">5</div>
+      </div>
+      <div class="checkpoint-card">
+        <div class="cp-dot checked"><svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M5 10l4 4 6-7" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="cp-content"><div class="cp-name">① Old-Growth Forest</div><div class="cp-status done">✅ Explored at 09:15</div></div>
+      </div>
+      <div class="checkpoint-card">
+        <div class="cp-dot pending">②</div>
+        <div class="cp-content"><div class="cp-name">② Waterfall in the Forest</div><div class="cp-status pending">⬜ Not yet explored</div></div>
+      </div>
+      <div class="checkpoint-card">
+        <div class="cp-dot pending">③</div>
+        <div class="cp-content"><div class="cp-name">③ Ancient Trees</div><div class="cp-status pending">⬜ Not yet explored</div></div>
+      </div>
+      <div class="checkpoint-card">
+        <div class="cp-dot pending">④</div>
+        <div class="cp-content"><div class="cp-name">④ Scenic Viewpoint</div><div class="cp-status pending">⬜ Not yet explored</div></div>
+      </div>
+      <div class="checkpoint-card">
+        <div class="cp-dot pending">⑤</div>
+        <div class="cp-content"><div class="cp-name">⑤ End Station</div><div class="cp-status pending">⬜ Not yet explored</div></div>
+      </div>
+      <button class="qr-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M17.5 14.5v6M14.5 17.5h6"/></svg>
+        Scan QR Code
+      </button>
+      <button class="end-btn" disabled>
+        <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="10" cy="10" r="8"/><path stroke-linecap="round" d="M10 6v4l3 2"/></svg>
+        End Journey
+      </button>
+      <div style="height:4px;"></div>
+    </div>
+    <div class="footer">
+      <div class="footer-entry">
+        <div class="footer-entry-left">
+          <div class="footer-entry-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M3 6l18 0M3 14l18 0"/></svg></div>
+          <div><div class="footer-entry-label">Back to M01</div></div>
+        </div>
+        <button class="info-icon-btn"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 16v-4M12 8h.01"/></svg></button>
+      </div>
+    </div>
+  </div>
+  <div class="caption">
+    <h3>SCR-M02-001 — Journey Session <span class="tag alt">EN</span></h3>
+    <ul>
+      <li>1/5 checkpoints explored</li>
+      <li>Language toggle accent-colored to indicate EN active</li>
+      <li>All text localized per <code>LanguagePreference.languageCode</code></li>
+    </ul>
+  </div>
+</div>
+
+</body>
+</html>

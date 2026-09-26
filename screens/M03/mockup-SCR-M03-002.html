@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SCR-M03-002 — Route Editor | Cuc Phuong Quest</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Nunito:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --color-primary: #2D6A4F;
+    --color-primary-dark: #1B4332;
+    --color-primary-light: #40916C;
+    --color-accent: #D4A017;
+    --color-accent-light: #F0C040;
+    --color-bg: #F5F7F4;
+    --color-surface: #FFFFFF;
+    --color-border: #E0E8E3;
+    --color-text-primary: #1A2E22;
+    --color-text-secondary: #5A7A68;
+    --color-text-muted: #8AA89E;
+    --color-success: #2D6A4F;
+    --color-warning: #D4A017;
+    --color-danger: #C0392B;
+    --color-info: #2980B9;
+    --shadow-sm: 0 1px 3px rgba(45,106,79,0.08);
+    --shadow-md: 0 4px 12px rgba(45,106,79,0.12);
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 14px;
+    --font-body: 'Inter', 'Nunito', system-ui, sans-serif;
+    --font-display: 'Playfair Display', serif;
+    --sidebar-width: 260px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { font-size: 14px; }
+  body {
+    font-family: var(--font-body);
+    background: var(--color-bg);
+    color: var(--color-text-primary);
+    min-height: 100vh;
+    display: flex;
+  }
+
+  /* ─── Sidebar (same as M03-001) ─── */
+  .sidebar {
+    width: var(--sidebar-width);
+    min-height: 100vh;
+    background: var(--color-primary);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0; left: 0;
+    z-index: 100;
+  }
+  .sidebar-logo {
+    padding: 28px 24px 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+  }
+  .sidebar-logo h1 {
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    color: #fff;
+    font-weight: 700;
+  }
+  .sidebar-logo span {
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.6);
+    display: block;
+    margin-top: 2px;
+  }
+  .sidebar-section-label {
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    padding: 20px 24px 8px;
+  }
+  .sidebar-nav { flex: 1; padding: 8px 12px; }
+  .sidebar-nav a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: var(--radius-sm);
+    color: rgba(255,255,255,0.75);
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: background 0.15s, color 0.15s;
+    margin-bottom: 2px;
+  }
+  .sidebar-nav a:hover { background: rgba(255,255,255,0.1); color: #fff; }
+  .sidebar-nav a.active { background: rgba(255,255,255,0.18); color: #fff; }
+  .sidebar-nav a .icon { font-size: 1rem; width: 20px; text-align: center; }
+  .sidebar-nav a .badge { margin-left: auto; background: var(--color-accent); color: var(--color-text-primary); font-size: 0.65rem; font-weight: 700; padding: 2px 7px; border-radius: 99px; }
+  .sidebar-footer { padding: 16px 12px; border-top: 1px solid rgba(255,255,255,0.12); }
+  .sidebar-user { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: var(--radius-sm); cursor: pointer; }
+  .sidebar-user:hover { background: rgba(255,255,255,0.1); }
+  .avatar { width: 34px; height: 34px; background: var(--color-accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.8rem; color: var(--color-text-primary); flex-shrink: 0; }
+  .sidebar-user-info { flex: 1; overflow: hidden; }
+  .sidebar-user-info .name { font-size: 0.8rem; font-weight: 600; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .sidebar-user-info .role { font-size: 0.68rem; color: rgba(255,255,255,0.5); }
+
+  /* ─── Editor Layout ─── */
+  .main-content {
+    margin-left: var(--sidebar-width);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  /* Editor Topbar */
+  .editor-topbar {
+    background: var(--color-surface);
+    border-bottom: 1px solid var(--color-border);
+    padding: 0 28px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+  .back-btn {
+    background: none;
+    border: none;
+    font-size: 1.1rem;
+    cursor: pointer;
+    padding: 8px 10px;
+    border-radius: var(--radius-sm);
+    color: var(--color-text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-family: var(--font-body);
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+  .back-btn:hover { background: var(--color-bg); color: var(--color-primary); }
+  .topbar-title {
+    flex: 1;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+  }
+  .topbar-title span { color: var(--color-text-muted); font-weight: 400; }
+  .topbar-user { display: flex; align-items: center; gap: 8px; font-size: 0.8rem; color: var(--color-text-secondary); }
+  .topbar-user .avatar { width: 30px; height: 30px; font-size: 0.72rem; }
+
+  /* Two-column editor */
+  .editor-body {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 0;
+    flex: 1;
+  }
+
+  /* Form area */
+  .form-area {
+    padding: 28px;
+    overflow-y: auto;
+  }
+
+  .section-divider {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-primary);
+    padding: 20px 0 12px;
+    border-bottom: 1px solid var(--color-border);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-divider .num {
+    background: var(--color-primary);
+    color: #fff;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+  }
+
+  .form-row { margin-bottom: 16px; }
+  .form-row-2col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  .form-label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--color-text-secondary);
+    margin-bottom: 6px;
+  }
+  .form-label .required { color: var(--color-danger); margin-left: 2px; }
+  .form-label .hint { font-weight: 400; color: var(--color-text-muted); font-size: 0.72rem; margin-left: 4px; }
+  .form-input, .form-textarea, .form-select {
+    width: 100%;
+    padding: 9px 13px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    font-size: 0.875rem;
+    font-family: var(--font-body);
+    background: var(--color-surface);
+    color: var(--color-text-primary);
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .form-input:focus, .form-textarea:focus, .form-select:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(45,106,79,0.1);
+  }
+  .form-input::placeholder, .form-textarea::placeholder { color: var(--color-text-muted); }
+  .form-textarea { resize: vertical; min-height: 80px; }
+  .lang-indicator {
+    display: inline-block;
+    font-size: 0.65rem;
+    font-weight: 700;
+    background: var(--color-bg);
+    color: var(--color-text-muted);
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-bottom: 4px;
+  }
+
+  /* Radio / Difficulty */
+  .radio-group { display: flex; gap: 20px; flex-wrap: wrap; }
+  .radio-option {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    cursor: pointer;
+    font-size: 0.875rem;
+    color: var(--color-text-primary);
+  }
+  .radio-option input[type="radio"] { accent-color: var(--color-primary); width: 15px; height: 15px; }
+  .radio-option:hover { color: var(--color-primary); }
+
+  /* Tags */
+  .tag-group { margin-bottom: 12px; }
+  .tag-group-label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--color-text-secondary);
+    margin-bottom: 8px;
+  }
+  .tag-group-label span { color: var(--color-danger); }
+  .tag-options { display: flex; flex-wrap: wrap; gap: 8px; }
+  .tag-option {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border: 1px solid var(--color-border);
+    border-radius: 99px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-family: var(--font-body);
+    background: var(--color-surface);
+    color: var(--color-text-secondary);
+    transition: all 0.15s;
+    user-select: none;
+  }
+  .tag-option input { display: none; }
+  .tag-option:hover { border-color: var(--color-primary-light); color: var(--color-primary); }
+  .tag-option.selected {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: #fff;
+  }
+  .tag-option .check { font-size: 0.7rem; }
+  .tag-option.selected .check { opacity: 0.8; }
+
+  /* Checkpoint list */
+  .checkpoint-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
+  .checkpoint-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    font-size: 0.875rem;
+  }
+  .checkpoint-seq {
+    font-weight: 700;
+    font-size: 0.75rem;
+    color: var(--color-primary);
+    background: rgba(45,106,79,0.1);
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .checkpoint-info { flex: 1; }
+  .checkpoint-name { font-weight: 600; color: var(--color-text-primary); }
+  .connectivity-badge {
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 99px;
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+  .connectivity-badge.online { background: #EBF5FB; color: #2980B9; }
+  .connectivity-badge.offline { background: #EAF5EF; color: #2D6A4F; }
+  .checkpoint-actions { display: flex; gap: 6px; }
+  .btn-icon {
+    background: none;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    padding: 5px 8px;
+    cursor: pointer;
+    font-size: 0.75rem;
+    transition: all 0.15s;
+    font-family: var(--font-body);
+  }
+  .btn-icon:hover { background: var(--color-surface); border-color: var(--color-primary-light); color: var(--color-primary); }
+  .btn-icon.danger:hover { border-color: var(--color-danger); color: var(--color-danger); }
+  .add-checkpoint-btn {
+    width: 100%;
+    padding: 10px;
+    border: 2px dashed var(--color-border);
+    border-radius: var(--radius-sm);
+    background: transparent;
+    color: var(--color-primary);
+    font-size: 0.8rem;
+    font-weight: 600;
+    font-family: var(--font-body);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: all 0.15s;
+  }
+  .add-checkpoint-btn:hover { border-color: var(--color-primary); background: rgba(45,106,79,0.04); }
+
+  /* Action buttons */
+  .form-actions { display: flex; flex-direction: column; gap: 10px; margin-top: 28px; padding-top: 20px; border-top: 1px solid var(--color-border); }
+  .btn {
+    padding: 10px 20px;
+    border-radius: var(--radius-sm);
+    font-size: 0.875rem;
+    font-weight: 600;
+    font-family: var(--font-body);
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all 0.15s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    width: 100%;
+  }
+  .btn-primary { background: var(--color-primary); color: #fff; border-color: var(--color-primary); }
+  .btn-primary:hover { background: var(--color-primary-dark); }
+  .btn-primary:disabled { background: var(--color-border); color: var(--color-text-muted); border-color: var(--color-border); cursor: not-allowed; }
+  .btn-accent { background: var(--color-accent); color: var(--color-text-primary); border-color: var(--color-accent); }
+  .btn-accent:hover { background: var(--color-accent-light); }
+  .btn-ghost { background: transparent; border-color: var(--color-border); color: var(--color-text-secondary); }
+  .btn-ghost:hover { background: var(--color-bg); }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  /* Sidebar checklist */
+  .checklist-area {
+    background: var(--color-surface);
+    border-left: 1px solid var(--color-border);
+    padding: 24px 20px;
+    overflow-y: auto;
+  }
+  .checklist-title {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--color-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .checklist { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
+  .checklist-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 0.8rem;
+    color: var(--color-text-secondary);
+    padding: 8px 10px;
+    border-radius: var(--radius-sm);
+    background: var(--color-bg);
+  }
+  .checklist-item.pass { background: #EAF5EF; color: var(--color-success); }
+  .checklist-item.fail { background: #FDEDEC; color: var(--color-danger); }
+  .checklist-item .icon { flex-shrink: 0; margin-top: 1px; }
+  .checklist-item.fail .msg { text-decoration: none; }
+
+  .sidebar-divider { height: 1px; background: var(--color-border); margin: 16px 0; }
+
+  /* Status badge in sidebar */
+  .route-status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 99px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+  .route-status-badge.nhap { background: #F0F0F0; color: #7F8C8D; }
+  .route-status-badge .dot { width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+
+  /* Page footer */
+  .page-footer-nav {
+    border-top: 1px solid var(--color-border);
+    background: var(--color-surface);
+    padding: 12px 28px;
+    display: flex;
+    gap: 20px;
+    margin-top: auto;
+  }
+  .footer-nav-btn {
+    background: none;
+    border: none;
+    font-size: 0.8rem;
+    font-family: var(--font-body);
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    padding: 6px 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border-bottom: 2px solid transparent;
+    transition: all 0.15s;
+  }
+  .footer-nav-btn:hover { color: var(--color-primary); border-bottom-color: var(--color-primary); }
+</style>
+</head>
+<body>
+
+<!-- ─── Sidebar ─── -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <h1>Cúc Phương Quest</h1>
+    <span>Content Management</span>
+  </div>
+  <div class="sidebar-section-label">Quản trị</div>
+  <nav class="sidebar-nav">
+    <a href="#" class="active">
+      <span class="icon">🛤️</span> Quản lý tuyến
+    </a>
+    <a href="#">
+      <span class="icon">📋</span> Báo cáo
+    </a>
+    <a href="#">
+      <span class="icon">👤</span> Quản lý tài khoản
+    </a>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="sidebar-user">
+      <div class="avatar">LN</div>
+      <div class="sidebar-user-info">
+        <div class="name">Lan Nguyen Thi</div>
+        <div class="role">Content Staff</div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- ─── Main Content ─── -->
+<main class="main-content">
+
+  <!-- Top bar -->
+  <header class="editor-topbar">
+    <button class="back-btn">← Quay lại</button>
+    <div class="topbar-title">
+      Soạn tuyến: <span>Tuyến Rừng Nguyên Sinh</span>
+    </div>
+    <div class="topbar-user">
+      <div class="avatar">LN</div>
+      Lan NT
+    </div>
+  </header>
+
+  <!-- Two-column body -->
+  <div class="editor-body">
+
+    <!-- ─── Form area ─── -->
+    <div class="form-area">
+
+      <!-- Section: Thông tin tuyến -->
+      <div class="section-divider"><span class="num">1</span> Thông tin tuyến</div>
+
+      <div class="form-row">
+        <label class="form-label">Tên tuyến (VI) <span class="required">*</span></label>
+        <input type="text" class="form-input" value="Tuyến Rừng Nguyên Sinh" placeholder="Nhập tên tuyến tiếng Việt...">
+      </div>
+      <div class="form-row">
+        <label class="form-label">Mô tả (VI) <span class="required">*</span></label>
+        <textarea class="form-textarea" placeholder="Mô tả hành trình...">Hành trình xuyên rừng nguyên sinh, khám phá hệ sinh thái đa dạng với các loài cây cổ thụ hàng trăm năm tuổi.</textarea>
+      </div>
+      <div class="form-row">
+        <label class="form-label">Tên tuyến (EN)</label>
+        <input type="text" class="form-input" placeholder="Route name in English...">
+      </div>
+      <div class="form-row">
+        <label class="form-label">Mô tả (EN)</label>
+        <textarea class="form-textarea" placeholder="Description in English..."></textarea>
+      </div>
+      <div class="form-row">
+        <label class="form-label">Cảnh báo an toàn (VI)</label>
+        <textarea class="form-textarea" placeholder="Cảnh báo an toàn khi đi trên tuyến..."></textarea>
+      </div>
+      <div class="form-row">
+        <label class="form-label">Cảnh báo an toàn (EN)</label>
+        <textarea class="form-textarea" placeholder="Safety warning in English..."></textarea>
+      </div>
+
+      <!-- Section: Đặc điểm tuyến -->
+      <div class="section-divider"><span class="num">2</span> Đặc điểm tuyến</div>
+
+      <div class="form-row-2col">
+        <div>
+          <label class="form-label">Cự ly (km) <span class="required">*</span></label>
+          <input type="number" class="form-input" value="5" min="0.1" step="0.1">
+        </div>
+        <div>
+          <label class="form-label">Thời lượng (phút) <span class="required">*</span></label>
+          <input type="number" class="form-input" value="120" min="1">
+        </div>
+      </div>
+      <div class="form-row">
+        <label class="form-label">Độ khó <span class="required">*</span></label>
+        <div class="radio-group">
+          <label class="radio-option"><input type="radio" name="difficulty" checked> Dễ</label>
+          <label class="radio-option"><input type="radio" name="difficulty"> Trung bình</label>
+          <label class="radio-option"><input type="radio" name="difficulty"> Khó</label>
+        </div>
+      </div>
+
+      <!-- Section: Gợi ý tuyến -->
+      <div class="section-divider"><span class="num">3</span> Gợi ý tuyến</div>
+
+      <div class="tag-group">
+        <div class="tag-group-label">Thời gian khám phá <span>*</span> <span class="hint">(chọn 1+)</span></div>
+        <div class="tag-options">
+          <label class="tag-option selected"><input type="checkbox" checked> <span class="check">✓</span> Buổi sáng</label>
+          <label class="tag-option"><input type="checkbox"> <span class="check">✓</span> Buổi trưa</label>
+          <label class="tag-option"><input type="checkbox"> <span class="check">✓</span> Buổi chiều</label>
+          <label class="tag-option selected"><input type="checkbox" checked> <span class="check">✓</span> Cả ngày</label>
+        </div>
+      </div>
+      <div class="tag-group">
+        <div class="tag-group-label">Đối tượng phù hợp <span>*</span> <span class="hint">(chọn 1+)</span></div>
+        <div class="tag-options">
+          <label class="tag-option selected"><input type="checkbox" checked> <span class="check">✓</span> Gia đình</label>
+          <label class="tag-option"><input type="checkbox"> <span class="check">✓</span> Cặp đôi</label>
+          <label class="tag-option selected"><input type="checkbox" checked> <span class="check">✓</span> Bạn bè</label>
+          <label class="tag-option"><input type="checkbox"> <span class="check">✓</span> Một mình</label>
+        </div>
+      </div>
+      <div class="tag-group">
+        <div class="tag-group-label">Loại hình trải nghiệm <span>*</span> <span class="hint">(chọn 1+)</span></div>
+        <div class="tag-options">
+          <label class="tag-option"><input type="checkbox"> <span class="check">✓</span> Khám phá</label>
+          <label class="tag-option selected"><input type="checkbox" checked> <span class="check">✓</span> Thiên nhiên</label>
+          <label class="tag-option"><input type="checkbox"> <span class="check">✓</span> Văn hóa</label>
+          <label class="tag-option selected"><input type="checkbox" checked> <span class="check">✓</span> Thể chất</label>
+        </div>
+      </div>
+
+      <!-- Section: Checkpoint -->
+      <div class="section-divider"><span class="num">4</span> Checkpoint</div>
+
+      <div class="checkpoint-list">
+        <div class="checkpoint-item">
+          <span class="checkpoint-seq">1</span>
+          <div class="checkpoint-info">
+            <span class="checkpoint-name">Rừng Nguyên Sinh</span>
+            <span class="connectivity-badge online">ONLINE</span>
+          </div>
+          <div class="checkpoint-actions">
+            <button class="btn-icon">✏️</button>
+            <button class="btn-icon danger">🗑️</button>
+          </div>
+        </div>
+        <div class="checkpoint-item">
+          <span class="checkpoint-seq">2</span>
+          <div class="checkpoint-info">
+            <span class="checkpoint-name">Thác Nước Trong Rừng</span>
+            <span class="connectivity-badge offline">OFFLINE</span>
+          </div>
+          <div class="checkpoint-actions">
+            <button class="btn-icon">✏️</button>
+            <button class="btn-icon danger">🗑️</button>
+          </div>
+        </div>
+        <div class="checkpoint-item">
+          <span class="checkpoint-seq">3</span>
+          <div class="checkpoint-info">
+            <span class="checkpoint-name">Rừng Cổ Thụ</span>
+            <span class="connectivity-badge offline">OFFLINE</span>
+          </div>
+          <div class="checkpoint-actions">
+            <button class="btn-icon">✏️</button>
+            <button class="btn-icon danger">🗑️</button>
+          </div>
+        </div>
+      </div>
+      <button class="add-checkpoint-btn">+ Thêm checkpoint</button>
+
+      <!-- Actions -->
+      <div class="form-actions">
+        <button class="btn btn-primary">💾 Lưu nháp</button>
+        <button class="btn btn-accent" disabled title="Cần hoàn thành đầy đủ thông tin">Gửi duyệt</button>
+      </div>
+
+    </div>
+
+    <!-- ─── Checklist sidebar ─── -->
+    <aside class="checklist-area">
+      <div class="route-status-badge nhap">
+        <span class="dot"></span> NHÁP
+      </div>
+      <div class="checklist-title">⚠️ Kiểm tra điều kiện</div>
+      <div class="checklist">
+        <div class="checklist-item fail">
+          <span class="icon">❌</span>
+          <span class="msg">Tên EN còn trống</span>
+        </div>
+        <div class="checklist-item fail">
+          <span class="icon">❌</span>
+          <span class="msg">Mô tả EN còn trống</span>
+        </div>
+        <div class="checklist-item fail">
+          <span class="icon">❌</span>
+          <span class="msg">Cảnh báo EN còn trống</span>
+        </div>
+        <div class="checklist-item pass">
+          <span class="icon">✅</span>
+          <span>Đã chọn thời gian khám phá</span>
+        </div>
+        <div class="checklist-item pass">
+          <span class="icon">✅</span>
+          <span>Đã chọn đối tượng phù hợp</span>
+        </div>
+        <div class="checklist-item pass">
+          <span class="icon">✅</span>
+          <span>Đã chọn loại hình trải nghiệm</span>
+        </div>
+        <div class="checklist-item pass">
+          <span class="icon">✅</span>
+          <span>Đã thêm checkpoint</span>
+        </div>
+        <div class="checklist-item fail">
+          <span class="icon">❌</span>
+          <span class="msg">Checkpoint #1: chưa đủ nội dung VI</span>
+        </div>
+        <div class="checklist-item fail">
+          <span class="icon">❌</span>
+          <span class="msg">Checkpoint #2: thiếu mã QR</span>
+        </div>
+        <div class="checklist-item fail">
+          <span class="icon">❌</span>
+          <span class="msg">Checkpoint #3: thiếu mã QR</span>
+        </div>
+      </div>
+
+      <div class="sidebar-divider"></div>
+      <div class="checklist-title">📝 Mẹo</div>
+      <p style="font-size:0.78rem;color:var(--color-text-muted);line-height:1.6">
+        Nhấn <strong>Lưu nháp</strong> để lưu tiến độ bất kỳ lúc nào. Khi tất cả các mục đều ✅, nút <strong>Gửi duyệt</strong> sẽ được kích hoạt.
+      </p>
+    </aside>
+
+  </div>
+
+  <!-- Footer nav -->
+  <div class="page-footer-nav">
+    <button class="footer-nav-btn">📋 Báo cáo</button>
+    <button class="footer-nav-btn">👤 Quản lý tài khoản</button>
+  </div>
+
+</main>
+
+<script>
+  // Tag selection toggle
+  document.querySelectorAll('.tag-option').forEach(function(opt) {
+    opt.addEventListener('click', function() {
+      var cb = this.querySelector('input[type="checkbox"]');
+      cb.checked = !cb.checked;
+      this.classList.toggle('selected', cb.checked);
+    });
+  });
+  // Recompute checklist (simulate)
+  function updateChecklist() {
+    var enName = document.querySelectorAll('.form-input')[2].value;
+    var enDesc = document.querySelectorAll('.form-textarea')[1].value;
+    var items = document.querySelectorAll('.checklist-item');
+    if (enName.length > 0) {
+      items[0].classList.remove('fail'); items[0].classList.add('pass');
+      items[0].innerHTML = '<span class="icon">✅</span><span>Đã nhập tên EN</span>';
+    }
+    if (enDesc.length > 0) {
+      items[1].classList.remove('fail'); items[1].classList.add('pass');
+      items[1].innerHTML = '<span class="icon">✅</span><span>Đã nhập mô tả EN</span>';
+    }
+    // Enable submit if all pass
+    var submitBtn = document.querySelector('.btn-accent');
+    var fails = document.querySelectorAll('.checklist-item.fail');
+    submitBtn.disabled = fails.length > 0;
+  }
+  document.querySelectorAll('.form-input, .form-textarea').forEach(function(el) {
+    el.addEventListener('input', updateChecklist);
+  });
+</script>
+</body>
+</html>
