@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SCR-M03-005 — Operations Reports | Cuc Phuong Quest</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Nunito:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --color-primary: #2D6A4F;
+    --color-primary-dark: #1B4332;
+    --color-primary-light: #40916C;
+    --color-accent: #D4A017;
+    --color-accent-light: #F0C040;
+    --color-bg: #F5F7F4;
+    --color-surface: #FFFFFF;
+    --color-border: #E0E8E3;
+    --color-text-primary: #1A2E22;
+    --color-text-secondary: #5A7A68;
+    --color-text-muted: #8AA89E;
+    --color-success: #2D6A4F;
+    --color-warning: #D4A017;
+    --color-danger: #C0392B;
+    --color-info: #2980B9;
+    --shadow-sm: 0 1px 3px rgba(45,106,79,0.08);
+    --shadow-md: 0 4px 12px rgba(45,106,79,0.12);
+    --shadow-lg: 0 8px 24px rgba(45,106,79,0.16);
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 14px;
+    --font-body: 'Inter', 'Nunito', system-ui, sans-serif;
+    --font-display: 'Playfair Display', serif;
+    --sidebar-width: 260px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { font-size: 14px; }
+  body {
+    font-family: var(--font-body);
+    background: var(--color-bg);
+    color: var(--color-text-primary);
+    min-height: 100vh;
+    display: flex;
+  }
+
+  /* ─── Sidebar ─── */
+  .sidebar {
+    width: var(--sidebar-width);
+    min-height: 100vh;
+    background: var(--color-primary);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0; left: 0;
+    z-index: 100;
+  }
+  .sidebar-logo {
+    padding: 28px 24px 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+  }
+  .sidebar-logo h1 {
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    color: #fff;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+  .sidebar-logo span {
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.6);
+    font-weight: 400;
+    display: block;
+    margin-top: 2px;
+  }
+  .sidebar-section-label {
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    padding: 20px 24px 8px;
+  }
+  .sidebar-nav { flex: 1; padding: 8px 12px; }
+  .sidebar-nav a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: var(--radius-sm);
+    color: rgba(255,255,255,0.75);
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: background 0.15s, color 0.15s;
+    margin-bottom: 2px;
+  }
+  .sidebar-nav a:hover { background: rgba(255,255,255,0.1); color: #fff; }
+  .sidebar-nav a.active { background: rgba(255,255,255,0.18); color: #fff; }
+  .sidebar-nav a .icon { font-size: 1rem; width: 20px; text-align: center; }
+  .sidebar-footer { padding: 16px 12px; border-top: 1px solid rgba(255,255,255,0.12); }
+  .sidebar-user {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+  }
+  .avatar {
+    width: 34px; height: 34px;
+    background: var(--color-accent);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.8rem;
+    color: var(--color-text-primary);
+    flex-shrink: 0;
+  }
+  .avatar.reviewer { background: #E8D5F0; color: #7B2D8B; }
+  .sidebar-user-info { flex: 1; overflow: hidden; }
+  .sidebar-user-info .name { font-size: 0.8rem; font-weight: 600; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .sidebar-user-info .role { font-size: 0.68rem; color: rgba(255,255,255,0.5); }
+
+  /* ─── Main Content ─── */
+  .main-content {
+    margin-left: var(--sidebar-width);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  .top-header {
+    background: var(--color-surface);
+    border-bottom: 1px solid var(--color-border);
+    padding: 0 32px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+  .back-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: none;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    padding: 6px 12px;
+    font-size: 0.8rem;
+    font-family: var(--font-body);
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    transition: all 0.15s;
+    margin-right: 16px;
+  }
+  .back-btn:hover { background: var(--color-bg); border-color: var(--color-primary-light); color: var(--color-primary); }
+  .top-header-title { font-size: 1rem; font-weight: 600; color: var(--color-text-primary); }
+
+  /* Page content */
+  .page-content { padding: 28px 32px; flex: 1; }
+
+  /* ─── Filter bar ─── */
+  .filter-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: 18px 20px;
+    margin-bottom: 20px;
+  }
+  .filter-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    align-items: flex-end;
+  }
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  .form-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--color-text-secondary);
+  }
+  .form-input, .form-select {
+    padding: 8px 12px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    font-size: 0.85rem;
+    font-family: var(--font-body);
+    background: var(--color-surface);
+    color: var(--color-text-primary);
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .form-input:focus, .form-select:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(45,106,79,0.1);
+  }
+  .tz-note {
+    font-size: 0.72rem;
+    color: var(--color-text-muted);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 8px 0 0;
+  }
+  .btn {
+    padding: 9px 20px;
+    border-radius: var(--radius-sm);
+    font-size: 0.85rem;
+    font-weight: 600;
+    font-family: var(--font-body);
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all 0.15s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .btn-primary { background: var(--color-primary); color: #fff; border-color: var(--color-primary); }
+  .btn-primary:hover { background: var(--color-primary-dark); }
+  .btn-ghost { background: transparent; border-color: var(--color-border); color: var(--color-text-secondary); }
+  .btn-ghost:hover { background: var(--color-bg); }
+
+  /* ─── Report sections ─── */
+  .report-section {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: 20px 24px;
+    margin-bottom: 18px;
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--color-border);
+  }
+  .section-title {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .section-badge {
+    font-size: 0.68rem;
+    font-weight: 700;
+    background: var(--color-primary);
+    color: #fff;
+    padding: 2px 8px;
+    border-radius: 99px;
+    letter-spacing: 0.05em;
+  }
+
+  /* RPT-01 summary counters */
+  .rpt01-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+  .counter-card {
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: 14px 16px;
+  }
+  .counter-value {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .counter-label { font-size: 0.75rem; color: var(--color-text-muted); font-weight: 500; }
+  .counter-rate { font-size: 0.72rem; color: var(--color-text-muted); margin-top: 3px; }
+  .counter-rate span { font-weight: 700; }
+  .counter-rate .rate-success span { color: var(--color-success); }
+  .counter-rate .rate-warn span { color: var(--color-warning); }
+  .counter-rate .rate-info span { color: var(--color-info); }
+
+  /* Bar chart */
+  .bar-chart { display: flex; flex-direction: column; gap: 10px; }
+  .bar-row { display: flex; align-items: center; gap: 12px; }
+  .bar-label {
+    font-size: 0.8rem;
+    color: var(--color-text-secondary);
+    width: 180px;
+    flex-shrink: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .bar-track {
+    flex: 1;
+    height: 20px;
+    background: var(--color-bg);
+    border-radius: 99px;
+    overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%;
+    background: var(--color-primary);
+    border-radius: 99px;
+    display: flex;
+    align-items: center;
+    padding-left: 8px;
+    transition: width 0.5s ease;
+    min-width: 2px;
+  }
+  .bar-value {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #fff;
+    white-space: nowrap;
+  }
+  .bar-count {
+    font-size: 0.78rem;
+    color: var(--color-text-muted);
+    width: 80px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  /* RPT-02 table */
+  .rpt02-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+  }
+  .rpt02-table th {
+    text-align: left;
+    padding: 8px 12px;
+    background: var(--color-bg);
+    border-bottom: 2px solid var(--color-border);
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .rpt02-table td {
+    padding: 9px 12px;
+    border-bottom: 1px solid var(--color-border);
+    color: var(--color-text-secondary);
+  }
+  .rpt02-table tr:last-child td { border-bottom: none; }
+  .rpt02-table .checkpoint-num {
+    font-weight: 700;
+    color: var(--color-primary);
+    margin-right: 4px;
+  }
+  .rpt02-table .checkpoint-name { color: var(--color-text-primary); }
+  .rpt02-table .visit-count { font-weight: 700; color: var(--color-text-primary); text-align: center; }
+  .rpt02-table .visit-rate { text-align: center; }
+  .last-badge {
+    font-size: 0.65rem;
+    background: var(--color-bg);
+    color: var(--color-text-muted);
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+    padding: 1px 5px;
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+  .rate-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .rate-bar-track {
+    flex: 1;
+    height: 6px;
+    background: var(--color-border);
+    border-radius: 99px;
+    overflow: hidden;
+  }
+  .rate-bar-fill {
+    height: 100%;
+    background: var(--color-primary);
+    border-radius: 99px;
+  }
+  .rate-bar-fill.low { background: var(--color-warning); }
+  .rate-bar-fill.high { background: var(--color-success); }
+  .rate-bar-val { font-size: 0.78rem; font-weight: 600; color: var(--color-text-primary); width: 42px; text-align: right; }
+
+  /* Calculation note */
+  .calc-note {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    padding: 10px 14px;
+    margin-top: 14px;
+    line-height: 1.6;
+  }
+  .calc-note strong { color: var(--color-text-secondary); }
+
+  /* Funnel */
+  .funnel-section { margin-top: 16px; }
+  .funnel-title { font-size: 0.78rem; font-weight: 700; color: var(--color-text-secondary); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.06em; }
+  .funnel-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; font-size: 0.82rem; color: var(--color-text-secondary); }
+  .funnel-step { width: 16px; height: 16px; border-radius: 50%; background: var(--color-primary); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 0.65rem; font-weight: 700; flex-shrink: 0; }
+  .funnel-arrow { font-size: 0.65rem; color: var(--color-text-muted); margin: 0 2px; }
+  .drop-rate { margin-left: auto; font-size: 0.78rem; color: var(--color-danger); font-weight: 600; }
+
+  /* Export bar */
+  .export-bar { display: flex; gap: 10px; margin-top: 4px; }
+
+  /* Empty state */
+  .empty-state {
+    text-align: center;
+    padding: 48px 20px;
+    color: var(--color-text-muted);
+  }
+  .empty-state .icon { font-size: 2.8rem; margin-bottom: 10px; opacity: 0.4; }
+  .empty-state p { font-size: 0.875rem; }
+
+  /* Footer nav */
+  .page-footer-nav {
+    border-top: 1px solid var(--color-border);
+    background: var(--color-surface);
+    padding: 12px 32px;
+    display: flex;
+    gap: 20px;
+  }
+  .footer-nav-btn {
+    background: none;
+    border: none;
+    font-size: 0.8rem;
+    font-family: var(--font-body);
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    padding: 6px 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border-bottom: 2px solid transparent;
+    transition: all 0.15s;
+  }
+  .footer-nav-btn:hover, .footer-nav-btn.active { color: var(--color-primary); border-bottom-color: var(--color-primary); }
+</style>
+</head>
+<body>
+
+<!-- ─── Sidebar ─── -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <h1>Cúc Phương Quest</h1>
+    <span>Content Management</span>
+  </div>
+  <div class="sidebar-section-label">Quản trị</div>
+  <nav class="sidebar-nav">
+    <a href="#">
+      <span class="icon">🛤️</span> Quản lý tuyến
+    </a>
+    <a href="#" class="active">
+      <span class="icon">📋</span> Báo cáo
+    </a>
+    <a href="#">
+      <span class="icon">👤</span> Quản lý tài khoản
+    </a>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="sidebar-user">
+      <div class="avatar">LN</div>
+      <div class="sidebar-user-info">
+        <div class="name">Lan Nguyen Thi</div>
+        <div class="role">Content Staff</div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- ─── Main Content ─── -->
+<main class="main-content">
+
+  <!-- Top header -->
+  <header class="top-header">
+    <button class="back-btn">← Quay lại</button>
+    <span class="top-header-title">Báo cáo vận hành</span>
+  </header>
+
+  <!-- Page content -->
+  <div class="page-content">
+
+    <!-- Filter bar -->
+    <div class="filter-card">
+      <div class="filter-row">
+        <div class="form-group">
+          <label class="form-label">Từ ngày</label>
+          <input type="date" class="form-input" value="2026-08-22" aria-label="Từ ngày">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Đến ngày</label>
+          <input type="date" class="form-input" value="2026-09-21" aria-label="Đến ngày">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Tuyến</label>
+          <select class="form-select" aria-label="Lọc theo tuyến">
+            <option>Tất cả tuyến</option>
+            <option>Tuyến Rừng Nguyên Sinh</option>
+            <option>Tuyến Đại Thác Nước</option>
+            <option>Tuyến Hang Động</option>
+          </select>
+        </div>
+        <button class="btn btn-primary" onclick="document.getElementById('reportContent').style.display='block'; document.getElementById('emptyState').style.display='none';">Tải dữ liệu</button>
+      </div>
+      <div class="tz-note">
+        🕐 Thời gian: Asia/Bangkok (UTC+7) — Tất cả dữ liệu theo múi giờ Việt Nam
+      </div>
+    </div>
+
+    <!-- Report content (shown after load) -->
+    <div id="reportContent">
+
+      <!-- RPT-01: Session Overview -->
+      <div class="report-section">
+        <div class="section-header">
+          <div class="section-title">
+            📊 <span>RPT-01: Tổng quan phiên</span>
+            <span class="section-badge">BÁO CÁO</span>
+          </div>
+        </div>
+
+        <div class="rpt01-grid">
+          <div class="counter-card">
+            <div class="counter-value">247</div>
+            <div class="counter-label">Tổng số phiên</div>
+          </div>
+          <div class="counter-card">
+            <div class="counter-value" style="color:var(--color-success)">198</div>
+            <div class="counter-label">Hoàn thành (HOAN_TAT)</div>
+            <div class="counter-rate rate-success"><span>80.2%</span> tổng phiên</div>
+          </div>
+          <div class="counter-card">
+            <div class="counter-value" style="color:var(--color-warning)">49</div>
+            <div class="counter-label">Bỏ dở (BO_DO)</div>
+            <div class="counter-rate rate-warn"><span>19.8%</span> tổng phiên</div>
+          </div>
+          <div class="counter-card">
+            <div class="counter-value" style="color:var(--color-info)">0</div>
+            <div class="counter-label">Đang diễn ra (DANG_DIEN_RA)</div>
+            <div class="counter-rate rate-info"><span>0.0%</span> tổng phiên</div>
+          </div>
+        </div>
+
+        <!-- Bar chart: sessions per route -->
+        <div class="section-title" style="margin-bottom:12px">Biểu đồ theo tuyến</div>
+        <div class="bar-chart">
+          <div class="bar-row">
+            <div class="bar-label" title="Tuyến Rừng Nguyên Sinh">Tuyến Rừng Nguyên Sinh</div>
+            <div class="bar-track">
+              <div class="bar-fill" style="width:100%"><span class="bar-value">120 phiên</span></div>
+            </div>
+            <div class="bar-count">120 phiên</div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-label" title="Tuyến Đại Thác Nước">Tuyến Đại Thác Nước</div>
+            <div class="bar-track">
+              <div class="bar-fill" style="width:74.2%"><span class="bar-value">89 phiên</span></div>
+            </div>
+            <div class="bar-count">89 phiên</div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-label" title="Tuyến Hang Động">Tuyến Hang Động</div>
+            <div class="bar-track">
+              <div class="bar-fill" style="width:31.7%"><span class="bar-value">38 phiên</span></div>
+            </div>
+            <div class="bar-count">38 phiên</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RPT-02: Checkpoint Visit -->
+      <div class="report-section">
+        <div class="section-header">
+          <div class="section-title">
+            🗺️ <span>RPT-02: Chi tiết checkpoint</span>
+            <span class="section-badge">CHI TIẾT</span>
+          </div>
+          <select class="form-select" style="font-size:0.8rem;padding:6px 10px;" onchange="toggleRPT02Detail(this.value)">
+            <option>Tuyến Rừng Nguyên Sinh</option>
+            <option>Tuyến Đại Thác Nước</option>
+            <option>Tuyến Hang Động</option>
+          </select>
+        </div>
+
+        <table class="rpt02-table" role="table" aria-label="Chi tiết checkpoint">
+          <thead>
+            <tr>
+              <th scope="col">Checkpoint</th>
+              <th scope="col" style="text-align:center">Lượt ghé thăm</th>
+              <th scope="col" style="text-align:center;min-width:220px">Tỷ lệ ghé thăm</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="checkpoint-num">#1</span><span class="checkpoint-name">Rừng Nguyên Sinh</span></td>
+              <td class="visit-count">118</td>
+              <td class="visit-rate">
+                <div class="rate-bar">
+                  <div class="rate-bar-track"><div class="rate-bar-fill high" style="width:98.3%"></div></div>
+                  <span class="rate-bar-val">98.3%</span>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td><span class="checkpoint-num">#2</span><span class="checkpoint-name">Thác Nước Trong Rừng</span></td>
+              <td class="visit-count">115</td>
+              <td class="visit-rate">
+                <div class="rate-bar">
+                  <div class="rate-bar-track"><div class="rate-bar-fill high" style="width:95.8%"></div></div>
+                  <span class="rate-bar-val">95.8%</span>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td><span class="checkpoint-num">#3</span><span class="checkpoint-name">Rừng Cổ Thụ</span></td>
+              <td class="visit-count">108</td>
+              <td class="visit-rate">
+                <div class="rate-bar">
+                  <div class="rate-bar-track"><div class="rate-bar-fill" style="width:90.0%"></div></div>
+                  <span class="rate-bar-val">90.0%</span>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td><span class="checkpoint-num">#4</span><span class="checkpoint-name">Điểm Ngắm Cảnh</span></td>
+              <td class="visit-count">102</td>
+              <td class="visit-rate">
+                <div class="rate-bar">
+                  <div class="rate-bar-track"><div class="rate-bar-fill" style="width:85.0%"></div></div>
+                  <span class="rate-bar-val">85.0%</span>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <span class="checkpoint-num">#5</span><span class="checkpoint-name">Trạm Cuối</span>
+                <span class="last-badge">checkpoint cuối</span>
+              </td>
+              <td class="visit-count">98</td>
+              <td class="visit-rate">
+                <div class="rate-bar">
+                  <div class="rate-bar-track"><div class="rate-bar-fill low" style="width:81.7%"></div></div>
+                  <span class="rate-bar-val">81.7%</span>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="calc-note">
+          <strong>Cách tính:</strong> Tỷ lệ ghé thăm = số phiên <strong>duy nhất</strong> đã ghé checkpoint ÷ tổng phiên đã hoàn thành (HOAN_TAT) của tuyến.
+          Mỗi phiên chỉ tính <strong>1 lần</strong> cho mỗi checkpoint. Mẫu số theo quyết định: tổng phiên bắt đầu theo tuyến (base: 120 HOAN_TAT cho Tuyến Rừng Nguyên Sinh).
+        </div>
+
+        <!-- Funnel drop-off -->
+        <div class="funnel-section">
+          <div class="funnel-title">Phân tích drop-off giữa các checkpoint</div>
+          <div class="funnel-row">
+            <div class="funnel-step">1</div>
+            <span>Tổng bắt đầu: <strong>120 phiên</strong></span>
+          </div>
+          <div class="funnel-row">
+            <span style="margin-left:8px;color:var(--color-text-muted)">↓ 98.3%</span>
+            <span class="funnel-arrow">→</span>
+            <div class="funnel-step">2</div>
+            <span>Checkpoint #1: <strong>118</strong></span>
+            <span class="drop-rate">Drop: 1.7%</span>
+          </div>
+          <div class="funnel-row">
+            <span style="margin-left:8px;color:var(--color-text-muted)">↓ 97.5%</span>
+            <span class="funnel-arrow">→</span>
+            <div class="funnel-step">3</div>
+            <span>Checkpoint #2: <strong>115</strong></span>
+            <span class="drop-rate">Drop: 2.5%</span>
+          </div>
+          <div class="funnel-row">
+            <span style="margin-left:8px;color:var(--color-text-muted)">↓ 93.9%</span>
+            <span class="funnel-arrow">→</span>
+            <div class="funnel-step">4</div>
+            <span>Checkpoint #3: <strong>108</strong></span>
+            <span class="drop-rate">Drop: 6.1%</span>
+          </div>
+          <div class="funnel-row">
+            <span style="margin-left:8px;color:var(--color-text-muted)">↓ 94.4%</span>
+            <span class="funnel-arrow">→</span>
+            <div class="funnel-step">5</div>
+            <span>Checkpoint #4: <strong>102</strong></span>
+            <span class="drop-rate">Drop: 5.6%</span>
+          </div>
+          <div class="funnel-row">
+            <span style="margin-left:8px;color:var(--color-text-muted)">↓ 96.1%</span>
+            <span class="funnel-arrow">→</span>
+            <div class="funnel-step">✓</div>
+            <span>Checkpoint #5 (cuối): <strong>98</strong></span>
+            <span class="drop-rate" style="color:var(--color-success)">Hoàn thành: 81.7%</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Export bar -->
+      <div class="export-bar" style="justify-content:flex-end; margin-bottom:20px;">
+        <button class="btn btn-ghost" onclick="alert('Đang xuất CSV…')">📥 Xuất CSV</button>
+        <button class="btn btn-ghost" onclick="alert('Đang xuất PDF…')">📥 Xuất PDF</button>
+      </div>
+
+    </div><!-- /reportContent -->
+
+    <!-- Empty state (shown initially) -->
+    <div id="emptyState" class="report-section" style="display:none;">
+      <div class="empty-state">
+        <div class="icon">📊</div>
+        <p>Không có dữ liệu phiên trong khoảng thời gian này.</p>
+        <p class="sub" style="font-size:0.78rem;margin-top:4px;">Thử thay đổi bộ lọc hoặc mở rộng khoảng thời gian.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Footer nav -->
+  <div class="page-footer-nav">
+    <button class="footer-nav-btn active">📋 Báo cáo</button>
+    <button class="footer-nav-btn">👤 Quản lý tài khoản</button>
+  </div>
+
+</main>
+
+<script>
+  // Default show report content
+  document.getElementById('reportContent').style.display = 'block';
+</script>
+</body>
+</html>

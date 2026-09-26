@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SCR-M03-004 — Review & Publication | Cuc Phuong Quest</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Nunito:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --color-primary: #2D6A4F;
+    --color-primary-dark: #1B4332;
+    --color-primary-light: #40916C;
+    --color-accent: #D4A017;
+    --color-accent-light: #F0C040;
+    --color-bg: #F5F7F4;
+    --color-surface: #FFFFFF;
+    --color-border: #E0E8E3;
+    --color-text-primary: #1A2E22;
+    --color-text-secondary: #5A7A68;
+    --color-text-muted: #8AA89E;
+    --color-success: #2D6A4F;
+    --color-warning: #D4A017;
+    --color-danger: #C0392B;
+    --color-info: #2980B9;
+    --shadow-sm: 0 1px 3px rgba(45,106,79,0.08);
+    --shadow-md: 0 4px 12px rgba(45,106,79,0.12);
+    --shadow-lg: 0 8px 24px rgba(45,106,79,0.16);
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 14px;
+    --font-body: 'Inter', 'Nunito', system-ui, sans-serif;
+    --font-display: 'Playfair Display', serif;
+    --sidebar-width: 260px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { font-size: 14px; }
+  body {
+    font-family: var(--font-body);
+    background: var(--color-bg);
+    color: var(--color-text-primary);
+    min-height: 100vh;
+    display: flex;
+  }
+
+  /* ─── Sidebar ─── */
+  .sidebar {
+    width: var(--sidebar-width);
+    min-height: 100vh;
+    background: var(--color-primary);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0; left: 0;
+    z-index: 100;
+  }
+  .sidebar-logo {
+    padding: 28px 24px 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+  }
+  .sidebar-logo h1 {
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    color: #fff;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+  .sidebar-logo span {
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.6);
+    font-weight: 400;
+    display: block;
+    margin-top: 2px;
+  }
+  .sidebar-section-label {
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    padding: 20px 24px 8px;
+  }
+  .sidebar-nav { flex: 1; padding: 8px 12px; }
+  .sidebar-nav a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: var(--radius-sm);
+    color: rgba(255,255,255,0.75);
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: background 0.15s, color 0.15s;
+    margin-bottom: 2px;
+  }
+  .sidebar-nav a:hover { background: rgba(255,255,255,0.1); color: #fff; }
+  .sidebar-nav a.active {
+    background: rgba(255,255,255,0.18);
+    color: #fff;
+  }
+  .sidebar-nav a .icon { font-size: 1rem; width: 20px; text-align: center; }
+  .sidebar-footer {
+    padding: 16px 12px;
+    border-top: 1px solid rgba(255,255,255,0.12);
+  }
+  .sidebar-user {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+  }
+  .avatar {
+    width: 34px; height: 34px;
+    background: var(--color-accent);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.8rem;
+    color: var(--color-text-primary);
+    flex-shrink: 0;
+  }
+  .avatar.reviewer { background: #E8D5F0; color: #7B2D8B; }
+  .sidebar-user-info { flex: 1; overflow: hidden; }
+  .sidebar-user-info .name {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #fff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .sidebar-user-info .role {
+    font-size: 0.68rem;
+    color: rgba(255,255,255,0.5);
+  }
+
+  /* ─── Main Content ─── */
+  .main-content {
+    margin-left: var(--sidebar-width);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  .top-header {
+    background: var(--color-surface);
+    border-bottom: 1px solid var(--color-border);
+    padding: 0 32px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+  .top-header-left { display: flex; align-items: center; gap: 16px; }
+  .back-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: none;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    padding: 6px 12px;
+    font-size: 0.8rem;
+    font-family: var(--font-body);
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .back-btn:hover { background: var(--color-bg); border-color: var(--color-primary-light); color: var(--color-primary); }
+  .top-header-title { font-size: 1rem; font-weight: 600; color: var(--color-text-primary); }
+
+  /* Page content */
+  .page-content { padding: 28px 32px; flex: 1; }
+
+  /* Route info bar */
+  .route-info-bar {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: 16px 20px;
+    margin-bottom: 20px;
+  }
+  .route-info-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 24px;
+    align-items: center;
+  }
+  .info-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.82rem;
+    color: var(--color-text-secondary);
+  }
+  .info-item strong { color: var(--color-text-primary); font-weight: 600; }
+  .info-sep { color: var(--color-border); }
+
+  /* Section */
+  .section-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 10px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  /* Checklist */
+  .checklist-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: 20px;
+    margin-bottom: 16px;
+  }
+  .checklist-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 7px 0;
+    font-size: 0.85rem;
+    border-bottom: 1px solid var(--color-bg);
+  }
+  .checklist-row:last-child { border-bottom: none; }
+  .check-icon {
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.65rem;
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .check-icon.pass { background: #EAF5EF; color: var(--color-success); }
+  .check-icon.fail { background: #FDEDEC; color: var(--color-danger); }
+  .check-icon.warn { background: #FFF9E6; color: var(--color-warning); }
+  .checklist-row.fail .check-text { color: var(--color-danger); font-weight: 600; }
+  .checklist-row.pass .check-text { color: var(--color-success); }
+  .checklist-sub {
+    padding-left: 30px;
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+  }
+  .checklist-sub .checklist-row { padding: 5px 0; }
+
+  /* Gap badge */
+  .gap-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: #FFF0F0;
+    color: var(--color-danger);
+    border: 1px solid #FFD0D0;
+    border-radius: 99px;
+    padding: 4px 12px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    margin-bottom: 14px;
+  }
+
+  /* Partial approval */
+  .partial-notice {
+    background: #FFF9E6;
+    border: 1px solid #FFE580;
+    border-radius: var(--radius-md);
+    padding: 14px 16px;
+    margin-bottom: 16px;
+    font-size: 0.85rem;
+    color: #7A5800;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .partial-notice .icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
+
+  /* Action bar */
+  .action-bar {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    padding: 16px 0 0;
+    border-top: 1px solid var(--color-border);
+    margin-top: 4px;
+  }
+  .btn {
+    padding: 9px 20px;
+    border-radius: var(--radius-sm);
+    font-size: 0.85rem;
+    font-weight: 600;
+    font-family: var(--font-body);
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all 0.15s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .btn-ghost {
+    background: transparent;
+    border-color: var(--color-border);
+    color: var(--color-text-secondary);
+  }
+  .btn-ghost:hover { background: var(--color-bg); }
+  .btn-danger {
+    background: var(--color-danger);
+    color: #fff;
+    border-color: var(--color-danger);
+  }
+  .btn-danger:hover { background: #A93226; }
+  .btn-success {
+    background: var(--color-success);
+    color: #fff;
+    border-color: var(--color-success);
+  }
+  .btn-success:hover { background: var(--color-primary-dark); }
+  .btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+
+  /* Modal */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    backdrop-filter: blur(2px);
+  }
+  .modal {
+    background: var(--color-surface);
+    border-radius: var(--radius-lg);
+    padding: 28px;
+    width: 500px;
+    max-width: 90vw;
+    box-shadow: var(--shadow-lg);
+    animation: modal-in 0.2s ease;
+  }
+  @keyframes modal-in {
+    from { opacity: 0; transform: scale(0.95) translateY(-8px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+  }
+  .modal-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .modal-icon { font-size: 1.5rem; }
+  .modal-title { font-size: 1rem; font-weight: 700; color: var(--color-text-primary); }
+  .modal-body { margin-bottom: 20px; }
+  .modal-body p {
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+    margin-bottom: 8px;
+  }
+  .modal-body .highlight {
+    font-weight: 700;
+    color: var(--color-text-primary);
+  }
+  .modal-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--color-text-secondary);
+    margin-bottom: 6px;
+    display: block;
+  }
+  .modal-textarea {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    font-size: 0.875rem;
+    font-family: var(--font-body);
+    resize: vertical;
+    min-height: 90px;
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .modal-textarea:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(45,106,79,0.1);
+  }
+  .modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+  }
+
+  /* Publishing overlay */
+  .overlay-card {
+    background: var(--color-surface);
+    border-radius: var(--radius-lg);
+    padding: 36px;
+    width: 440px;
+    max-width: 90vw;
+    box-shadow: var(--shadow-lg);
+    text-align: center;
+  }
+  .spinner {
+    width: 52px; height: 52px;
+    border: 4px solid var(--color-border);
+    border-top-color: var(--color-primary);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto 18px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .overlay-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    margin-bottom: 8px;
+  }
+  .overlay-sub {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+
+  /* Success banner */
+  .result-banner {
+    background: var(--color-surface);
+    border-radius: var(--radius-md);
+    padding: 20px 24px;
+    border: 1px solid var(--color-border);
+    box-shadow: var(--shadow-md);
+  }
+  .result-banner.success { border-color: #A8D5B5; background: #F0FAF3; }
+  .result-banner.error { border-color: #F5A0A0; background: #FDF5F5; }
+  .result-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .result-header .icon { font-size: 1.4rem; }
+  .result-header .text { font-size: 1rem; font-weight: 700; color: var(--color-text-primary); }
+  .result-body {
+    font-size: 0.85rem;
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+    margin-bottom: 14px;
+    padding-left: 34px;
+  }
+  .result-body strong { color: var(--color-text-primary); }
+  .result-actions { display: flex; gap: 10px; padding-left: 34px; }
+
+  /* Footer nav */
+  .page-footer-nav {
+    border-top: 1px solid var(--color-border);
+    background: var(--color-surface);
+    padding: 12px 32px;
+    display: flex;
+    gap: 20px;
+  }
+  .footer-nav-btn {
+    background: none;
+    border: none;
+    font-size: 0.8rem;
+    font-family: var(--font-body);
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    padding: 6px 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border-bottom: 2px solid transparent;
+    transition: all 0.15s;
+  }
+  .footer-nav-btn:hover { color: var(--color-primary); border-bottom-color: var(--color-primary); }
+  .footer-nav-btn.active { color: var(--color-primary); border-bottom-color: var(--color-primary); }
+</style>
+</head>
+<body>
+
+<!-- ─── Sidebar ─── -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <h1>Cúc Phương Quest</h1>
+    <span>Content Management</span>
+  </div>
+  <div class="sidebar-section-label">Quản trị</div>
+  <nav class="sidebar-nav">
+    <a href="#">
+      <span class="icon">🛤️</span> Quản lý tuyến
+    </a>
+    <a href="#">
+      <span class="icon">📋</span> Báo cáo
+    </a>
+    <a href="#" class="active">
+      <span class="icon">👤</span> Quản lý tài khoản
+    </a>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="sidebar-user">
+      <div class="avatar reviewer">MP</div>
+      <div class="sidebar-user-info">
+        <div class="name">Minh Pham K.</div>
+        <div class="role">Reviewer</div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- ─── Main Content ─── -->
+<main class="main-content">
+
+  <!-- Top header -->
+  <header class="top-header">
+    <div class="top-header-left">
+      <button class="back-btn">← Quay lại</button>
+      <span class="top-header-title">Duyệt tuyến: Tuyến Rừng Nguyên Sinh</span>
+    </div>
+  </header>
+
+  <!-- Page content -->
+  <div class="page-content">
+
+    <!-- Route info bar -->
+    <div class="route-info-bar">
+      <div class="route-info-row">
+        <div class="info-item"><strong>Tuyến:</strong> Tuyến Rừng Nguyên Sinh</div>
+        <div class="info-sep">·</div>
+        <div class="info-item"><strong>Người tạo:</strong> Lan NT</div>
+        <div class="info-sep">·</div>
+        <div class="info-item"><strong>Ngày gửi duyệt:</strong> 2026-09-20 14:30</div>
+        <div class="info-sep">·</div>
+        <div class="info-item"><strong>Trạng thái:</strong> <span style="color:var(--color-warning);font-weight:700">CHO_DUYET</span></div>
+      </div>
+    </div>
+
+    <!-- Checklist -->
+    <div class="section-title">Kiểm tra điều kiện xuất bản</div>
+    <div class="checklist-card">
+
+      <!-- Route-level checks -->
+      <div class="checklist-row pass">
+        <div class="check-icon pass">✓</div>
+        <div class="check-text">Tên VI: Tuyến Rừng Nguyên Sinh</div>
+      </div>
+      <div class="checklist-row pass">
+        <div class="check-icon pass">✓</div>
+        <div class="check-text">Mô tả VI: Hành trình xuyên rừng nguyên sinh...</div>
+      </div>
+      <div class="checklist-row pass">
+        <div class="check-icon pass">✓</div>
+        <div class="check-text">Tên EN: Pristine Forest Trail</div>
+      </div>
+      <div class="checklist-row pass">
+        <div class="check-icon pass">✓</div>
+        <div class="check-text">Mô tả EN: Journey through the pristine forest...</div>
+      </div>
+      <div class="checklist-row pass">
+        <div class="check-icon pass">✓</div>
+        <div class="check-text">Cảnh báo EN: đã điền (tùy chọn)</div>
+      </div>
+      <div class="checklist-row pass">
+        <div class="check-icon pass">✓</div>
+        <div class="check-text">Thẻ thời gian: Buổi sáng, Cả ngày</div>
+      </div>
+      <div class="checklist-row pass">
+        <div class="check-icon pass">✓</div>
+        <div class="check-text">Thẻ đối tượng: Gia đình, Bạn bè</div>
+      </div>
+      <div class="checklist-row pass">
+        <div class="check-icon pass">✓</div>
+        <div class="check-text">Thẻ trải nghiệm: Thiên nhiên, Thể chất</div>
+      </div>
+      <div class="checklist-row pass">
+        <div class="check-icon pass">✓</div>
+        <div class="check-text">Khoảng cách & thời lượng: 5 km / 120 phút</div>
+      </div>
+      <div class="checklist-row pass">
+        <div class="check-icon pass">✓</div>
+        <div class="check-text">Độ khó: Trung bình</div>
+      </div>
+
+      <!-- Checkpoint #1 -->
+      <div class="checklist-row pass">
+        <div class="check-icon pass">✓</div>
+        <div class="check-text">
+          Checkpoint #1: Rừng Nguyên Sinh — OFFLINE — 1 QR
+          <div class="checklist-sub">
+            <div class="checklist-row pass"><div class="check-icon pass">✓</div><div class="check-text">Nội dung VI: DA_CONG_BO</div></div>
+            <div class="checklist-row pass"><div class="check-icon pass">✓</div><div class="check-text">Nội dung EN: DA_CONG_BO</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Checkpoint #2 -->
+      <div class="checklist-row pass">
+        <div class="check-icon pass">✓</div>
+        <div class="check-text">
+          Checkpoint #2: Thác Nước Trong Rừng — ONLINE — 2 QR
+          <div class="checklist-sub">
+            <div class="checklist-row pass"><div class="check-icon pass">✓</div><div class="check-text">Nội dung VI: DA_CONG_BO</div></div>
+            <div class="checklist-row pass"><div class="check-icon pass">✓</div><div class="check-text">Nội dung EN: DA_CONG_BO</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Checkpoint #3 — GAPS -->
+      <div class="checklist-row fail">
+        <div class="check-icon fail">✗</div>
+        <div class="check-text">
+          Checkpoint #3: Rừng Cổ Thụ — OFFLINE — 0 QR
+          <div class="checklist-sub">
+            <div class="checklist-row fail"><div class="check-icon fail">✗</div><div class="check-text">Cần ít nhất 1 mã QR</div></div>
+            <div class="checklist-row fail"><div class="check-icon fail">✗</div><div class="check-text">Nội dung EN: DANG_NHAP</div></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Gap badge -->
+    <div class="gap-badge">⚠ 2 vấn đề cần xử lý</div>
+
+    <!-- Partial approval notice -->
+    <div class="partial-notice">
+      <span class="icon">💡</span>
+      <div>
+        Checkpoint #3 chưa đủ điều kiện.<br>
+        → Bạn có muốn duyệt phần còn lại trước?
+        Chỉ Checkpoint #1 và #2 sẽ được kích hoạt; Checkpoint #3 giữ nguyên trạng thái NHÁP.
+      </div>
+    </div>
+
+    <!-- Action bar -->
+    <div class="action-bar">
+      <button class="btn btn-ghost" onclick="showRejectModal()">✗ Từ chối</button>
+      <button class="btn btn-success" onclick="showPublishOverlay()">✓ Duyệt</button>
+    </div>
+
+    <!-- Success state (hidden by default) -->
+    <div class="result-banner success" id="successBanner" style="display:none; margin-top:16px;">
+      <div class="result-header">
+        <span class="icon">✅</span>
+        <span class="text">Xuất bản thành công</span>
+      </div>
+      <div class="result-body">
+        Tuyến <strong>"Tuyến Rừng Nguyên Sinh"</strong> đã <strong>HOAT_DONG</strong>.<br>
+        Snapshot <strong>#4</strong> đã tạo: 2026-09-21 10:05<br>
+        Snapshot trước (#3) vẫn khả dụng.
+      </div>
+      <div class="result-actions">
+        <button class="btn btn-ghost" onclick="document.getElementById('successBanner').style.display='none'">Đóng</button>
+        <button class="btn btn-primary" onclick="window.location='#'">Quay lại danh sách tuyến</button>
+      </div>
+    </div>
+
+    <!-- Error state (hidden by default) -->
+    <div class="result-banner error" id="errorBanner" style="display:none; margin-top:16px;">
+      <div class="result-header">
+        <span class="icon">⚠</span>
+        <span class="text">Không thể xuất bản snapshot</span>
+      </div>
+      <div class="result-body">
+        Đã xảy ra lỗi khi tạo gói offline. Tuyến vẫn ở trạng thái CHO_DUYET.<br>
+        Thử lại hoặc liên hệ quản trị viên.
+      </div>
+      <div class="result-actions">
+        <button class="btn btn-danger" onclick="document.getElementById('errorBanner').style.display='none'; showPublishOverlay();">Thử lại</button>
+        <button class="btn btn-ghost" onclick="window.location='#'">Quay lại danh sách</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Footer nav -->
+  <div class="page-footer-nav">
+    <button class="footer-nav-btn">📋 Báo cáo</button>
+    <button class="footer-nav-btn active">👤 Quản lý tài khoản</button>
+  </div>
+
+</main>
+
+<!-- ─── Reject Modal ─── -->
+<div class="modal-overlay" id="rejectModal">
+  <div class="modal" role="dialog" aria-labelledby="rejectTitle" aria-modal="true">
+    <div class="modal-header">
+      <span class="modal-icon">✗</span>
+      <div class="modal-title" id="rejectTitle">Từ chối duyệt tuyến</div>
+    </div>
+    <div class="modal-body">
+      <p>Tuyến <span class="highlight">"Tuyến Rừng Nguyên Sinh"</span> sẽ được trả về trạng thái NHÁP.</p>
+      <label class="modal-label" for="rejectReason">Lý do từ chối * <span style="font-weight:400;color:var(--color-text-muted)">(tối thiểu 10 ký tự)</span></label>
+      <textarea class="modal-textarea" id="rejectReason" placeholder="Checkpoint #3 chưa có mã QR và nội dung EN..."></textarea>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="document.getElementById('rejectModal').style.display='none'">Hủy</button>
+      <button class="btn btn-danger" onclick="document.getElementById('rejectModal').style.display='none'; alert('Đã từ chối. Quay lại danh sách tuyến.')">Xác nhận từ chối</button>
+    </div>
+  </div>
+</div>
+
+<!-- ─── Publishing Overlay ─── -->
+<div class="modal-overlay" id="publishOverlay">
+  <div class="overlay-card" role="alertdialog" aria-labelledby="pubTitle" aria-live="polite">
+    <div class="spinner"></div>
+    <div class="overlay-title" id="pubTitle">⏳ Đang xuất bản snapshot...</div>
+    <div class="overlay-sub">Đang tạo gói dữ liệu offline cho Tuyến Rừng Nguyên Sinh.<br>Vui lòng chờ trong giây lát.</div>
+    <button class="btn btn-ghost" onclick="document.getElementById('publishOverlay').style.display='none'">Hủy bỏ</button>
+  </div>
+</div>
+
+<script>
+  function showRejectModal() {
+    document.getElementById('rejectModal').style.display = 'flex';
+  }
+  function showPublishOverlay() {
+    document.getElementById('rejectModal').style.display = 'none';
+    document.getElementById('publishOverlay').style.display = 'flex';
+    // Simulate async publish
+    setTimeout(function() {
+      document.getElementById('publishOverlay').style.display = 'none';
+      document.getElementById('successBanner').style.display = 'block';
+    }, 2500);
+  }
+  // Close modal on backdrop
+  document.querySelectorAll('.modal-overlay').forEach(function(overlay) {
+    overlay.addEventListener('click', function(e) {
+      if (e.target === overlay) overlay.style.display = 'none';
+    });
+  });
+</script>
+</body>
+</html>
