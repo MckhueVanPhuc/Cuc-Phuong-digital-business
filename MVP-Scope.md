@@ -54,6 +54,6 @@
 
 ## 4. Nguồn
 
-- [Specification M01](specs/spec-M01.md)
-- [Specification M02](specs/spec-M02.md)
-- [Specification M03](specs/spec-M03.md)
+- [Specification M01](docs/spec/modules/spec-M01.md)
+- [Specification M02](docs/spec/modules/spec-M02.md)
+- [Specification M03](docs/spec/modules/spec-M03.md)

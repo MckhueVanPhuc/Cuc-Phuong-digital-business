@@ -14,7 +14,7 @@ File này chỉ tập hợp nguyên văn các block `flowchart` đã có trong s
 
 ## M01 — Functional Flows
 
-Nguồn: [spec-M01.md](../../specs/spec-M01.md), §4.1–§4.5.
+Nguồn: [spec-M01.md](../spec/modules/spec-M01.md), §4.1–§4.5.
 
 ### UF-01 — Overall M01 Usage Flow
 
@@ -109,7 +109,7 @@ flowchart TD
 
 ## M02 — Usage flow
 
-Nguồn: [spec-M02.md](../../specs/spec-M02.md), §4.1.
+Nguồn: [spec-M02.md](../spec/modules/spec-M02.md), §4.1.
 
 ### UF-06 — M02 Usage Flow
 
@@ -158,7 +158,7 @@ flowchart TD
 
 ## M03 — Usage flow
 
-Nguồn: [spec-M03.md](../../specs/spec-M03.md), §4.1.
+Nguồn: [spec-M03.md](../spec/modules/spec-M03.md), §4.1.
 
 ### UF-07 — M03 Route Publication Flow
 

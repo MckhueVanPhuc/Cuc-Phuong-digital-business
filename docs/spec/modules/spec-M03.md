@@ -9,7 +9,7 @@
 | Date | 2026-09-22 |
 | Status | Ready for SDD/implementation planning |
 | Approved by (Client role) | Park Management — pending formal sign-off |
-| BRD source | [BRD-module-3.md](../business-requirements/BRD-module-3.md), v3.2 |
+| BRD source | [BRD-module-3.md](../../../business-requirements/BRD-module-3.md), v3.2 |
 
 ## 1. Purpose and scope
 
@@ -320,7 +320,7 @@ Every administratively editable entity carries `updated_at` for optimistic concu
 
 ## 8. Screens involved
 
-Chi tiết phân rã tại [screen-list-M03.md](../docs/screen-list-M03.md).
+Chi tiết phân rã tại [screen-list-M03.md](../../screen list/screen-list-M03.md).
 
 | Screen ID | Screen name | Main scope | Priority |
 |---|---|---|---|

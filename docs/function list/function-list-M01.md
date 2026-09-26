@@ -5,8 +5,8 @@
 | Field | Value |
 |---|---|
 | Module | M01 — Route Planning & Preparation |
-| Source Spec | [spec-M01.md](../specs/spec-M01.md) |
-| Priority Source | [MVP-Scope.md](../MVP-Scope.md) |
+| Source Spec | [spec-M01.md](../spec/modules/spec-M01.md) |
+| Priority Source | [MVP-Scope.md](../../MVP-Scope.md) |
 | Rule | Priority của sub-function kế thừa trực tiếp function cha |
 
 ## 2. Function hierarchy

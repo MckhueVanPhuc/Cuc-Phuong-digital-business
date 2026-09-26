@@ -5,8 +5,8 @@
 | Field | Value |
 |---|---|
 | Module | M02 — Field Experience |
-| Source Spec | [spec-M02.md](../specs/spec-M02.md) |
-| Priority Source | [MVP-Scope.md](../MVP-Scope.md) |
+| Source Spec | [spec-M02.md](../spec/modules/spec-M02.md) |
+| Priority Source | [MVP-Scope.md](../../MVP-Scope.md) |
 | Rule | Priority của sub-function kế thừa trực tiếp function cha |
 
 ## 2. Function hierarchy

@@ -5,9 +5,9 @@
 | Field | Value |
 |---|---|
 | Module | M02 — Field Experience |
-| Source Spec | [spec-M02.md](../specs/spec-M02.md) |
-| Function Source | [function-list-M02.md](function-list-M02.md) |
-| Priority Source | [MVP-Scope.md](../MVP-Scope.md) |
+| Source Spec | [spec-M02.md](../spec/modules/spec-M02.md) |
+| Function Source | [function-list-M02.md](../function list/function-list-M02.md) |
+| Priority Source | [MVP-Scope.md](../../MVP-Scope.md) |
 | Status | Ready for screen specification |
 
 ## 2. Decomposition rules

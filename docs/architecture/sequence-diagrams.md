@@ -11,7 +11,7 @@ File này chỉ tập hợp nguyên văn các block `sequenceDiagram` đã có t
 
 ## SD-01 — M01 Start Route & Handoff
 
-Nguồn: [spec-M01.md](../../specs/spec-M01.md), §4.7.
+Nguồn: [spec-M01.md](../spec/modules/spec-M01.md), §4.7.
 
 ```mermaid
 sequenceDiagram
@@ -36,7 +36,7 @@ sequenceDiagram
 
 ## SD-02 — M02 Quét QR & Check-in
 
-Nguồn: [spec-M02.md](../../specs/spec-M02.md), §4.2.
+Nguồn: [spec-M02.md](../spec/modules/spec-M02.md), §4.2.
 
 ```mermaid
 sequenceDiagram
@@ -76,7 +76,7 @@ sequenceDiagram
 
 ## SD-03 — M02 Session Sync
 
-Nguồn: [spec-M02.md](../../specs/spec-M02.md), §4.3.
+Nguồn: [spec-M02.md](../spec/modules/spec-M02.md), §4.3.
 
 ```mermaid
 sequenceDiagram
@@ -96,7 +96,7 @@ sequenceDiagram
 
 ## SD-04 — M03 Route Approval & Publication
 
-Nguồn: [spec-M03.md](../../specs/spec-M03.md), §4.2.
+Nguồn: [spec-M03.md](../spec/modules/spec-M03.md), §4.2.
 
 ```mermaid
 sequenceDiagram

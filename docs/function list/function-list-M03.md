@@ -5,8 +5,8 @@
 | Field | Value |
 |---|---|
 | Module | M03 — Operations & Content Administration |
-| Source Spec | [spec-M03.md](../specs/spec-M03.md) |
-| Priority Source | [MVP-Scope.md](../MVP-Scope.md) |
+| Source Spec | [spec-M03.md](../spec/modules/spec-M03.md) |
+| Priority Source | [MVP-Scope.md](../../MVP-Scope.md) |
 | Rule | Priority của sub-function kế thừa trực tiếp function cha |
 
 ## 2. Function hierarchy

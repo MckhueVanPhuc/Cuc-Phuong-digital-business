@@ -8,8 +8,8 @@
 | Module Name | Route Planning & Preparation — Lập kế hoạch & Chuẩn bị Tuyến |
 | Version | 1.1 — đồng bộ baseline BRD v2.4 |
 | Status | Ready for SDD/implementation planning — contract MVP M01/M02/M03 đã chốt |
-| Source of Truth | [BRD-module-1.md](../business-requirements/BRD-module-1.md), v2.4 |
-| Derived Documents | [Function List M01](../docs/function-list-M01.md), [Screen List M01](../docs/screen-list-M01.md) |
+| Source of Truth | [BRD-module-1.md](../../../business-requirements/BRD-module-1.md), v2.4 |
+| Derived Documents | [Function List M01](../../function list/function-list-M01.md), [Screen List M01](../../screen list/screen-list-M01.md) |
 | Last Updated | 2026-09-22 |
 | Next Step | SDD, API/storage schema và implementation planning |
 
@@ -916,7 +916,7 @@ Giữ operation của Step 4 §5. Dấu “—” nghĩa không có operation M0
 
 ## 7. Screens Involved
 
-Baseline screen decomposition: **Ready for visual design**. Phân rã và mapping đầy đủ tại [screen-list-M01.md](../docs/screen-list-M01.md). BRD v2.4 nêu sáu screen logic; spec gom các UI phụ như chọn ngôn ngữ và xác nhận tải vào bốn screen triển khai để tránh tạo màn hình độc lập không cần thiết.
+Baseline screen decomposition: **Ready for visual design**. Phân rã và mapping đầy đủ tại [screen-list-M01.md](../../screen list/screen-list-M01.md). BRD v2.4 nêu sáu screen logic; spec gom các UI phụ như chọn ngôn ngữ và xác nhận tải vào bốn screen triển khai để tránh tạo màn hình độc lập không cần thiết.
 
 | Screen ID | Screen Name | Primary FRs | Screen Spec |
 |---|---|---|---|

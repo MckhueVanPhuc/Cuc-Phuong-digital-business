@@ -5,9 +5,9 @@
 | Field | Value |
 |---|---|
 | Module | M03 — Operations & Content Administration |
-| Source Spec | [spec-M03.md](../specs/spec-M03.md) |
-| Function Source | [function-list-M03.md](function-list-M03.md) |
-| Priority Source | [MVP-Scope.md](../MVP-Scope.md) |
+| Source Spec | [spec-M03.md](../spec/modules/spec-M03.md) |
+| Function Source | [function-list-M03.md](../function list/function-list-M03.md) |
+| Priority Source | [MVP-Scope.md](../../MVP-Scope.md) |
 | Status | Ready for screen specification — synchronized with Spec M03 v1.1 |
 
 ## 2. Decomposition rules

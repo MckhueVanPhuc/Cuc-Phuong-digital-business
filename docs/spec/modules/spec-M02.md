@@ -331,7 +331,7 @@ sequenceDiagram
 
 ## 7. Screens involved
 
-Chi tiết phân rã tại [screen-list-M02.md](../docs/screen-list-M02.md).
+Chi tiết phân rã tại [screen-list-M02.md](../../screen list/screen-list-M02.md).
 
 | Screen ID | Screen name | Priority | Screen Spec target |
 |---|---|---|---|

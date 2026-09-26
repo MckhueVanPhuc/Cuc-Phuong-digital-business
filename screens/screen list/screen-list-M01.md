@@ -5,9 +5,9 @@
 | Field | Value |
 |---|---|
 | Module | M01 — Route Planning & Preparation |
-| Source Spec | [spec-M01.md](../specs/spec-M01.md) |
-| Function Source | [function-list-M01.md](function-list-M01.md) |
-| Priority Source | [MVP-Scope.md](../MVP-Scope.md) |
+| Source Spec | [spec-M01.md](../spec/modules/spec-M01.md) |
+| Function Source | [function-list-M01.md](../function list/function-list-M01.md) |
+| Priority Source | [MVP-Scope.md](../../MVP-Scope.md) |
 | Status | Ready for screen specification |
 
 ## 2. Decomposition rules
