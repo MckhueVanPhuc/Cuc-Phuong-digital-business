@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SCR-M02-002 — Nội dung checkpoint — Mockup</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Nunito:wght@400;500;600;700&display=swap');
+  </style>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --color-primary:#2D6A4F;--color-primary-dark:#1B4332;--color-primary-light:#40916C;
+      --color-accent:#D4A017;--color-accent-light:#F4D03F;
+      --color-bg:#F5F3EE;--color-surface:#FFFFFF;--color-border:#E0DDD8;
+      --color-text-primary:#1C1C1C;--color-text-secondary:#5C5C5C;--color-text-muted:#9B9B9B;
+      --color-danger:#C0392B;--color-success:#27AE60;--color-warning:#E67E22;
+      --color-info:#2980B9;--color-overlay:rgba(27,67,50,0.6);
+      --font-display:'Be Vietnam Pro','Inter','Nunito',sans-serif;--font-body:'Nunito',-apple-system,BlinkMacSystemFont,sans-serif;
+      --space-1:4px;--space-2:8px;--space-3:12px;--space-4:16px;--space-5:20px;--space-6:24px;--space-8:32px;--space-10:40px;
+      --radius-sm:6px;--radius-md:12px;--radius-lg:16px;--radius-xl:24px;
+      --shadow-card:0 2px 8px rgba(0,0,0,0.08),0 1px 2px rgba(0,0,0,0.04);
+      --shadow-elevated:0 8px 24px rgba(0,0,0,0.12),0 2px 6px rgba(0,0,0,0.06);
+      --transition-fast:150ms ease;--transition-normal:250ms ease;
+    }
+    body{font-family:var(--font-body);background:#1C1C1C;display:flex;justify-content:center;align-items:flex-start;min-height:100vh;padding:var(--space-6);gap:var(--space-6);}
+    .phone-frame{width:375px;height:812px;background:var(--color-bg);border-radius:44px;overflow:hidden;position:relative;box-shadow:0 0 0 1px rgba(255,255,255,0.1),0 32px 80px rgba(0,0,0,0.6),0 0 120px rgba(45,106,79,0.2);display:flex;flex-direction:column;}
+    .phone-frame::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:150px;height:30px;background:#000;border-radius:0 0 20px 20px;z-index:100;}
+    .status-bar{height:44px;background:var(--color-primary-dark);display:flex;justify-content:space-between;align-items:flex-end;padding:0 var(--space-6) 6px;color:#fff;font-size:12px;font-weight:600;letter-spacing:0.3px;flex-shrink:0;z-index:10;}
+    .status-bar-left{opacity:0.9;}
+    .status-bar-right{display:flex;gap:var(--space-2);align-items:center;}
+    .battery-icon{display:flex;align-items:center;gap:3px;}
+    .battery-icon svg{width:22px;height:12px;}
+    .header{background:var(--color-primary);padding:var(--space-3) var(--space-4) var(--space-4);display:flex;align-items:center;gap:var(--space-3);flex-shrink:0;position:relative;}
+    .header-back{width:40px;height:40px;border:none;background:rgba(255,255,255,0.15);border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background var(--transition-fast);flex-shrink:0;}
+    .header-back:hover{background:rgba(255,255,255,0.25);}
+    .header-back svg{color:#fff;}
+    .header-title{flex:1;text-align:center;font-family:var(--font-display);font-size:18px;font-weight:700;color:#fff;letter-spacing:0.3px;}
+    .lang-toggle{width:40px;height:40px;border:none;background:rgba(255,255,255,0.15);border-radius:var(--radius-sm);color:#fff;font-size:12px;font-weight:700;cursor:pointer;transition:background var(--transition-fast);flex-shrink:0;font-family:var(--font-body);}
+    .lang-toggle:hover{background:rgba(255,255,255,0.25);}
+    .content{flex:1;overflow-y:auto;scrollbar-width:none;}
+    .content::-webkit-scrollbar{display:none;}
+    /* Image gallery */
+    .gallery{position:relative;width:100%;height:220px;overflow:hidden;background:linear-gradient(160deg,#2D6A4F,#1B4332,#40916C);display:flex;align-items:center;justify-content:center;}
+    .gallery img{width:100%;height:100%;object-fit:cover;}
+    .gallery-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;position:relative;}
+    .gallery-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.5) 0%,transparent 50%);}
+    .gallery-title{position:absolute;bottom:var(--space-4);left:var(--space-4);font-family:var(--font-display);font-size:20px;font-weight:700;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,0.5);}
+    .gallery-dots{position:absolute;bottom:var(--space-3);left:50%;transform:translateX(-50%);display:flex;gap:6px;}
+    .gallery-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.4);}
+    .gallery-dot.active{background:#fff;width:18px;border-radius:3px;}
+    /* Badge */
+    .badge-row{padding:var(--space-3) var(--space-4);display:flex;align-items:center;gap:var(--space-2);}
+    .badge{font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;display:flex;align-items:center;gap:4px;}
+    .badge-green{background:#E8F5E9;color:#2E7D32;}
+    .badge-blue{background:#EBF5FB;color:#1565C0;}
+    .badge-orange{background:#FEF9E7;color:#E67E22;}
+    .badge svg{width:12px;height:12px;}
+    /* Info section */
+    .info-section{padding:0 var(--space-4) var(--space-4);}
+    .checkpoint-label{font-size:12px;font-weight:700;color:var(--color-primary);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;}
+    .checkpoint-name{font-family:var(--font-display);font-size:22px;font-weight:700;color:var(--color-text-primary);line-height:1.3;margin-bottom:var(--space-4);}
+    .intro-text{font-size:14px;line-height:1.7;color:var(--color-text-secondary);}
+    /* Section divider */
+    .section-header{padding:var(--space-3) var(--space-4) var(--space-2);display:flex;align-items:center;gap:var(--space-3);}
+    .section-title{font-size:11px;font-weight:700;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:1.5px;white-space:nowrap;}
+    .section-line{flex:1;height:1px;background:var(--color-border);}
+    /* Audio player */
+    .audio-card{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-md);margin:0 var(--space-4) var(--space-4);padding:var(--space-4);display:flex;align-items:center;gap:var(--space-3);}
+    .audio-thumb{width:48px;height:48px;border-radius:var(--radius-sm);background:linear-gradient(135deg,var(--color-primary),var(--color-primary-light));display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+    .audio-thumb svg{width:22px;height:22px;color:#fff;}
+    .audio-info{flex:1;min-width:0;}
+    .audio-title{font-size:13px;font-weight:700;color:var(--color-text-primary);margin-bottom:6px;}
+    .audio-controls{display:flex;align-items:center;gap:var(--space-2);}
+    .audio-time{font-size:11px;color:var(--color-text-muted);white-space:nowrap;}
+    .audio-seek{flex:1;height:4px;background:var(--color-border);border-radius:2px;overflow:hidden;}
+    .audio-seek-fill{width:78%;height:100%;background:var(--color-primary);border-radius:2px;}
+    .play-btn{width:40px;height:40px;border-radius:50%;background:var(--color-primary);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;}
+    .play-btn svg{width:18px;height:18px;color:#fff;}
+    /* Video player */
+    .video-card{margin:0 var(--space-4) var(--space-4);border-radius:var(--radius-md);overflow:hidden;position:relative;background:#000;aspect-ratio:16/9;}
+    .video-placeholder{width:100%;height:100%;background:linear-gradient(160deg,#1a1a2e,#16213e);display:flex;align-items:center;justify-content:center;}
+    .video-play{width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,0.15);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;backdrop-filter:blur(4px);}
+    .video-play svg{width:24px;height:24px;color:#fff;}
+    .video-label{position:absolute;top:var(--space-3);left:var(--space-3);font-size:11px;font-weight:700;color:#fff;background:rgba(0,0,0,0.5);padding:2px 8px;border-radius:4px;}
+    /* Footer */
+    .footer{flex-shrink:0;background:var(--color-surface);border-top:1px solid var(--color-border);padding:var(--space-3) var(--space-4);}
+    .footer-entry{display:flex;align-items:center;justify-content:space-between;padding:var(--space-3) var(--space-4);border-radius:var(--radius-md);cursor:pointer;transition:background var(--transition-fast);}
+    .footer-entry:hover{background:#F0EDE8;}
+    .footer-entry-left{display:flex;align-items:center;gap:var(--space-3);}
+    .footer-entry-icon{width:36px;height:36px;background:#FFF8E1;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+    .footer-entry-icon svg{width:18px;height:18px;color:var(--color-accent);}
+    .footer-entry-label{font-size:14px;font-weight:600;color:var(--color-text-primary);}
+    .footer-entry-sub{font-size:12px;color:var(--color-text-muted);margin-top:1px;}
+    .info-icon-btn{width:28px;height:28px;border:none;background:transparent;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--color-text-muted);transition:color var(--transition-fast);}
+    .info-icon-btn:hover{color:var(--color-primary);}
+    .info-icon-btn svg{width:16px;height:16px;}
+    /* Loading state */
+    .loading-state{padding:var(--space-6) var(--space-4);display:flex;flex-direction:column;align-items:center;gap:var(--space-4);}
+    .spinner{width:40px;height:40px;border:3px solid var(--color-border);border-top-color:var(--color-primary);border-radius:50%;animation:spin 800ms linear infinite;}
+    @keyframes spin{to{transform:rotate(360deg);}}
+    .loading-text{font-size:14px;color:var(--color-text-secondary);}
+    /* Error state */
+    .error-card{background:#FDEDEC;border:1px solid #FADBD8;border-radius:var(--radius-md);margin:0 var(--space-4) var(--space-4);padding:var(--space-5);display:flex;flex-direction:column;align-items:center;text-align:center;gap:var(--space-3);}
+    .error-icon{width:48px;height:48px;border-radius:50%;background:#FADBD8;display:flex;align-items:center;justify-content:center;}
+    .error-icon svg{width:24px;height:24px;color:var(--color-danger);}
+    .error-title{font-size:14px;font-weight:700;color:var(--color-text-primary);}
+    .error-msg{font-size:13px;color:var(--color-text-secondary);line-height:1.5;}
+    .btn-sm{border:none;border-radius:var(--radius-md);padding:var(--space-3) var(--space-4);font-family:var(--font-body);font-size:14px;font-weight:700;cursor:pointer;transition:all var(--transition-fast);width:100%;}
+    .btn-primary{background:var(--color-primary);color:#fff;}
+    .btn-primary:hover{background:var(--color-primary-dark);}
+    /* Skeleton */
+    .skeleton{background:linear-gradient(90deg,var(--color-border) 25%,#e8e5e0 50%,var(--color-border) 75%);background-size:200% 100%;animation:shimmer 1.4s infinite;border-radius:var(--radius-sm);}
+    @keyframes shimmer{0%{background-position:200% 0;}100%{background-position:-200% 0;}}
+    .caption{width:375px;color:rgba(255,255,255,0.6);font-size:12px;line-height:1.6;padding-top:var(--space-2);}
+    .caption h3{color:#fff;font-size:14px;font-weight:600;margin-bottom:var(--space-3);letter-spacing:0.3px;}
+    .caption ul{list-style:none;display:flex;flex-direction:column;gap:var(--space-2);}
+    .caption li::before{content:'• ';color:var(--color-primary-light);}
+    .caption .tag{display:inline-block;background:rgba(45,106,79,0.3);color:#74C69D;font-size:10px;padding:1px 6px;border-radius:4px;margin-left:4px;font-family:monospace;}
+    .caption .tag.alt{background:rgba(212,160,23,0.3);color:var(--color-accent-light);}
+  </style>
+</head>
+<body>
+
+<!-- ============================================================
+     SCR-M02-002 — VI — OFFLINE content state
+     ============================================================ -->
+<div>
+  <div class="phone-frame">
+    <div class="status-bar">
+      <span class="status-bar-left">10:05</span>
+      <span class="status-bar-right">
+        <svg width="16" height="12" viewBox="0 0 16 12" fill="white"><rect x="0" y="7" width="2" height="5" rx="0.5"/><rect x="3.5" y="5" width="2" height="7" rx="0.5"/><rect x="7" y="3" width="2" height="9" rx="0.5"/><rect x="10.5" y="0" width="2" height="12" rx="0.5"/></svg>
+        <svg width="14" height="12" viewBox="0 0 14 12" fill="white"><path d="M7 10.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/><path d="M4.93 8.07a4 4 0 0 1 4.14 0" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M2.29 5.64a7 7 0 0 1 9.42 0" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
+        <div class="battery-icon"><svg viewBox="0 0 22 12" fill="none"><rect x="0.5" y="0.5" width="19" height="11" rx="2.5" stroke="white" stroke-opacity="0.9"/><rect x="2" y="2" width="12" height="8" rx="1.5" fill="white"/><rect x="20" y="4" width="1.5" height="4" rx="0.75" fill="white"/></svg></div>
+      </span>
+    </div>
+    <div class="header">
+      <button class="header-back" aria-label="Quay lại">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M12 4l-6 6 6 6" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="header-title">Nội dung checkpoint</div>
+      <button class="lang-toggle">VI</button>
+    </div>
+    <div class="content">
+      <!-- Gallery image -->
+      <div class="gallery">
+        <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 40% 60%,rgba(64,145,108,0.7) 0%,transparent 60%),radial-gradient(ellipse at 70% 30%,rgba(212,160,23,0.2) 0%,transparent 50%);"></div>
+        <div class="gallery-overlay"></div>
+        <div class="gallery-title">③ Rừng Cổ Thụ</div>
+        <div class="gallery-dots">
+          <div class="gallery-dot active"></div>
+          <div class="gallery-dot"></div>
+          <div class="gallery-dot"></div>
+        </div>
+      </div>
+      <!-- Connectivity badge -->
+      <div class="badge-row">
+        <div class="badge badge-green">
+          <svg viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="currentColor" stroke-width="1.5"/><path d="M6 3.5v3l2 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          OFFLINE
+        </div>
+        <span style="font-size:12px;color:var(--color-text-muted);">Đã tải</span>
+      </div>
+      <!-- Checkpoint info -->
+      <div class="info-section">
+        <div class="checkpoint-label">Trạm ③</div>
+        <div class="checkpoint-name">Rừng Cổ Thụ</div>
+        <p class="intro-text">
+          Rừng già cổ thụ trên 600 năm. Đây là khu vực được bảo tồn nghiêm ngặt, nơi sinh sống của nhiều loài động vật quý hiếm như voọc chà vá, báo hoa mai và hàng trăm loài chim.
+        </p>
+      </div>
+      <!-- No media sections for OFFLINE per spec SR-SCR-M02-002-001 -->
+      <div style="padding:0 var(--space-4) var(--space-4);">
+        <div style="font-size:12px;color:var(--color-text-muted);font-style:italic;">Nội dung offline — không có audio/video</div>
+      </div>
+    </div>
+    <div class="footer">
+      <div class="footer-entry">
+        <div class="footer-entry-left">
+          <div class="footer-entry-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M3 6l18 0M3 14l18 0"/></svg></div>
+          <div><div class="footer-entry-label">Quay lại bản đồ</div></div>
+        </div>
+        <button class="info-icon-btn"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 16v-4M12 8h.01"/></svg></button>
+      </div>
+    </div>
+  </div>
+  <div class="caption">
+    <h3>SCR-M02-002 — OFFLINE content <span class="tag">VI</span></h3>
+    <ul>
+      <li><strong>E-07</strong> Badge "OFFLINE · Đã tải" — green, from OfflinePackage (M01)</li>
+      <li><strong>E-08</strong> introductionText displayed per <code>LanguagePreference</code></li>
+      <li>No audio/video sections — SR-SCR-M02-002-001</li>
+      <li>Tap checkpoint name image → opens SCR-M02-002; QR scan → same</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============================================================
+     SCR-M02-002 — VI — ONLINE content with audio + video
+     ============================================================ -->
+<div>
+  <div class="phone-frame">
+    <div class="status-bar">
+      <span class="status-bar-left">10:05</span>
+      <span class="status-bar-right">
+        <svg width="16" height="12" viewBox="0 0 16 12" fill="white"><rect x="0" y="7" width="2" height="5" rx="0.5"/><rect x="3.5" y="5" width="2" height="7" rx="0.5"/><rect x="7" y="3" width="2" height="9" rx="0.5"/><rect x="10.5" y="0" width="2" height="12" rx="0.5"/></svg>
+        <svg width="14" height="12" viewBox="0 0 14 12" fill="white"><path d="M7 10.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/><path d="M4.93 8.07a4 4 0 0 1 4.14 0" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M2.29 5.64a7 7 0 0 1 9.42 0" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
+        <div class="battery-icon"><svg viewBox="0 0 22 12" fill="none"><rect x="0.5" y="0.5" width="19" height="11" rx="2.5" stroke="white" stroke-opacity="0.9"/><rect x="2" y="2" width="12" height="8" rx="1.5" fill="white"/><rect x="20" y="4" width="1.5" height="4" rx="0.75" fill="white"/></svg></div>
+      </span>
+    </div>
+    <div class="header">
+      <button class="header-back"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M12 4l-6 6 6 6" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="header-title">Nội dung checkpoint</div>
+      <button class="lang-toggle">VI</button>
+    </div>
+    <div class="content">
+      <!-- Gallery -->
+      <div class="gallery" style="height:200px;">
+        <div style="position:absolute;inset:0;background:linear-gradient(160deg,#1565C0,#0D47A1,#1976D2);display:flex;align-items:center;justify-content:center;">
+          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
+        </div>
+        <div class="gallery-overlay"></div>
+        <div class="gallery-title">② Thác Nước Trong Rừng</div>
+        <div class="gallery-dots"><div class="gallery-dot active"></div><div class="gallery-dot"></div></div>
+      </div>
+      <!-- Online badge -->
+      <div class="badge-row">
+        <div class="badge badge-blue">
+          <svg viewBox="0 0 12 12" fill="none"><path d="M6 2a4 4 0 100 8A4 4 0 006 2z" stroke="currentColor" stroke-width="1.5"/><path d="M6 10v.01M6 6.5V6M4.5 8A1.5 1.5 0 116 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          ONLINE
+        </div>
+        <span style="font-size:12px;color:var(--color-text-muted);">Có thể có nội dung mới</span>
+      </div>
+      <!-- Info -->
+      <div class="info-section">
+        <div class="checkpoint-label">Trạm ②</div>
+        <div class="checkpoint-name">Thác Nước Trong Rừng</div>
+        <p class="intro-text">Thác nước cao 30m giữa rừng nguyên sinh. Tiếng nước rì rào và không khí trong lành mang đến trải nghiệm thư giãn tuyệt vời cho du khách.</p>
+      </div>
+      <!-- Audio section -->
+      <div class="section-header">
+        <span class="section-title">Âm thanh</span>
+        <div class="section-line"></div>
+      </div>
+      <div class="audio-card">
+        <div class="audio-thumb">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M9 9l6-6M9 9v6l6-6M9 9l-3 3M9 9l3 3M15 15l3-3M15 15l-3 3M15 15V9l-6 6"/></svg>
+        </div>
+        <div class="audio-info">
+          <div class="audio-title">Tiếng Thác Nước</div>
+          <div class="audio-controls">
+            <span class="audio-time">1:50</span>
+            <div class="audio-seek"><div class="audio-seek-fill"></div></div>
+            <span class="audio-time">2:34</span>
+          </div>
+        </div>
+        <button class="play-btn" aria-label="Phát audio">
+          <svg viewBox="0 0 20 20" fill="currentColor"><path d="M6 4l10 6-10 6V4z"/></svg>
+        </button>
+      </div>
+      <!-- Video section -->
+      <div class="section-header">
+        <span class="section-title">Video</span>
+        <div class="section-line"></div>
+      </div>
+      <div class="video-card">
+        <div class="video-placeholder">
+          <button class="video-play" aria-label="Phát video">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7L8 5z"/></svg>
+          </button>
+        </div>
+        <div class="video-label">Video</div>
+      </div>
+      <div style="height:8px;"></div>
+    </div>
+    <div class="footer">
+      <div class="footer-entry">
+        <div class="footer-entry-left"><div class="footer-entry-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M3 6l18 0M3 14l18 0"/></svg></div><div><div class="footer-entry-label">Quay lại bản đồ</div></div></div>
+        <button class="info-icon-btn"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 16v-4M12 8h.01"/></svg></button>
+      </div>
+    </div>
+  </div>
+  <div class="caption">
+    <h3>SCR-M02-002 — ONLINE with audio + video <span class="tag">VI</span></h3>
+    <ul>
+      <li><strong>E-07</strong> Badge "ONLINE · Có thể có nội dung mới" — blue, live from M03</li>
+      <li><strong>E-12</strong> Audio player — play/pause, seek bar at 78% (1:50 / 2:34)</li>
+      <li><strong>E-13</strong> Video player — centered play button, no auto-play (FR-M02-014)</li>
+      <li>No auto-play for audio/video under any condition — SR-SCR-M02-002-003</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============================================================
+     SCR-M02-002 — VI — LIVE loading state
+     ============================================================ -->
+<div>
+  <div class="phone-frame">
+    <div class="status-bar">
+      <span class="status-bar-left">10:05</span>
+      <span class="status-bar-right">
+        <svg width="16" height="12" viewBox="0 0 16 12" fill="white"><rect x="0" y="7" width="2" height="5" rx="0.5"/><rect x="3.5" y="5" width="2" height="7" rx="0.5"/><rect x="7" y="3" width="2" height="9" rx="0.5"/><rect x="10.5" y="0" width="2" height="12" rx="0.5"/></svg>
+        <svg width="14" height="12" viewBox="0 0 14 12" fill="white"><path d="M7 10.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/><path d="M4.93 8.07a4 4 0 0 1 4.14 0" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M2.29 5.64a7 7 0 0 1 9.42 0" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
+        <div class="battery-icon"><svg viewBox="0 0 22 12" fill="none"><rect x="0.5" y="0.5" width="19" height="11" rx="2.5" stroke="white" stroke-opacity="0.9"/><rect x="2" y="2" width="12" height="8" rx="1.5" fill="white"/><rect x="20" y="4" width="1.5" height="4" rx="0.75" fill="white"/></svg></div>
+      </span>
+    </div>
+    <div class="header">
+      <button class="header-back"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M12 4l-6 6 6 6" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="header-title">Nội dung checkpoint</div>
+      <button class="lang-toggle">VI</button>
+    </div>
+    <div class="content">
+      <!-- Skeleton gallery -->
+      <div style="width:100%;height:220px;background:var(--color-border);" class="skeleton"></div>
+      <!-- Loading badge -->
+      <div class="badge-row">
+        <div class="badge badge-blue">
+          <svg viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="currentColor" stroke-width="1.5"/></svg>
+          ONLINE
+        </div>
+        <span style="font-size:12px;color:var(--color-text-muted);">Đang tải nội dung...</span>
+      </div>
+      <!-- Skeleton content -->
+      <div class="info-section" style="display:flex;flex-direction:column;gap:var(--space-3);">
+        <div class="skeleton" style="height:12px;width:60px;border-radius:4px;"></div>
+        <div class="skeleton" style="height:24px;width:80%;border-radius:6px;"></div>
+        <div class="skeleton" style="height:12px;width:100%;border-radius:4px;"></div>
+        <div class="skeleton" style="height:12px;width:92%;border-radius:4px;"></div>
+        <div class="skeleton" style="height:12px;width:85%;border-radius:4px;"></div>
+      </div>
+      <div class="loading-state">
+        <div class="spinner"></div>
+        <div class="loading-text">Đang tải nội dung...</div>
+      </div>
+    </div>
+    <div class="footer">
+      <div class="footer-entry">
+        <div class="footer-entry-left"><div class="footer-entry-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M3 6l18 0M3 14l18 0"/></svg></div><div><div class="footer-entry-label">Quay lại bản đồ</div></div></div>
+        <button class="info-icon-btn"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 16v-4M12 8h.01"/></svg></button>
+      </div>
+    </div>
+  </div>
+  <div class="caption">
+    <h3>SCR-M02-002 — Loading <span class="tag">VI</span></h3>
+    <ul>
+      <li>Skeleton shimmer on gallery and text area while M03 content loads</li>
+      <li><strong>E-14</strong> Spinner + loading text</li>
+      <li><strong>E-03</strong> Language toggle still functional — reloads content vi/en</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============================================================
+     SCR-M02-002 — EN — Online content
+     ============================================================ -->
+<div>
+  <div class="phone-frame">
+    <div class="status-bar">
+      <span class="status-bar-left">10:05</span>
+      <span class="status-bar-right">
+        <svg width="16" height="12" viewBox="0 0 16 12" fill="white"><rect x="0" y="7" width="2" height="5" rx="0.5"/><rect x="3.5" y="5" width="2" height="7" rx="0.5"/><rect x="7" y="3" width="2" height="9" rx="0.5"/><rect x="10.5" y="0" width="2" height="12" rx="0.5"/></svg>
+        <svg width="14" height="12" viewBox="0 0 14 12" fill="white"><path d="M7 10.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/><path d="M4.93 8.07a4 4 0 0 1 4.14 0" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M2.29 5.64a7 7 0 0 1 9.42 0" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
+        <div class="battery-icon"><svg viewBox="0 0 22 12" fill="none"><rect x="0.5" y="0.5" width="19" height="11" rx="2.5" stroke="white" stroke-opacity="0.9"/><rect x="2" y="2" width="12" height="8" rx="1.5" fill="white"/><rect x="20" y="4" width="1.5" height="4" rx="0.75" fill="white"/></svg></div>
+      </span>
+    </div>
+    <div class="header">
+      <button class="header-back"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M12 4l-6 6 6 6" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="header-title" style="font-size:16px;">Checkpoint Content</div>
+      <button class="lang-toggle" style="background:var(--color-accent);color:var(--color-primary-dark);">EN</button>
+    </div>
+    <div class="content">
+      <div class="gallery" style="height:200px;">
+        <div style="position:absolute;inset:0;background:linear-gradient(160deg,#1565C0,#0D47A1,#1976D2);display:flex;align-items:center;justify-content:center;">
+          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
+        </div>
+        <div class="gallery-overlay"></div>
+        <div class="gallery-title">② Waterfall in the Forest</div>
+        <div class="gallery-dots"><div class="gallery-dot active"></div><div class="gallery-dot"></div></div>
+      </div>
+      <div class="badge-row">
+        <div class="badge badge-blue">
+          <svg viewBox="0 0 12 12" fill="none"><path d="M6 2a4 4 0 100 8A4 4 0 006 2z" stroke="currentColor" stroke-width="1.5"/><path d="M6 10v.01M6 6.5V6M4.5 8A1.5 1.5 0 116 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          ONLINE
+        </div>
+        <span style="font-size:12px;color:var(--color-text-muted);">May have new content</span>
+      </div>
+      <div class="info-section">
+        <div class="checkpoint-label" style="letter-spacing:1px;">Station ②</div>
+        <div class="checkpoint-name">Waterfall in the Forest</div>
+        <p class="intro-text">A 30m waterfall amid pristine forest. The soothing sound of rushing water and the fresh mountain air provide a truly relaxing experience for visitors.</p>
+      </div>
+      <div class="section-header">
+        <span class="section-title">Audio</span>
+        <div class="section-line"></div>
+      </div>
+      <div class="audio-card">
+        <div class="audio-thumb">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M9 9l6-6M9 9v6l6-6M9 9l-3 3M9 9l3 3M15 15l3-3M15 15l-3 3M15 15V9l-6 6"/></svg>
+        </div>
+        <div class="audio-info">
+          <div class="audio-title">Waterfall Sounds</div>
+          <div class="audio-controls">
+            <span class="audio-time">1:50</span>
+            <div class="audio-seek"><div class="audio-seek-fill"></div></div>
+            <span class="audio-time">2:34</span>
+          </div>
+        </div>
+        <button class="play-btn"><svg viewBox="0 0 20 20" fill="currentColor"><path d="M6 4l10 6-10 6V4z"/></svg></button>
+      </div>
+      <div class="section-header">
+        <span class="section-title">Video</span>
+        <div class="section-line"></div>
+      </div>
+      <div class="video-card">
+        <div class="video-placeholder">
+          <button class="video-play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7L8 5z"/></svg></button>
+        </div>
+        <div class="video-label">Video</div>
+      </div>
+      <div style="height:8px;"></div>
+    </div>
+    <div class="footer">
+      <div class="footer-entry">
+        <div class="footer-entry-left"><div class="footer-entry-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M3 6l18 0M3 14l18 0"/></svg></div><div><div class="footer-entry-label">Back to Map</div></div></div>
+        <button class="info-icon-btn"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 16v-4M12 8h.01"/></svg></button>
+      </div>
+    </div>
+  </div>
+  <div class="caption">
+    <h3>SCR-M02-002 — Online + audio/video <span class="tag alt">EN</span></h3>
+    <ul>
+      <li>All content localized per <code>LanguagePreference.languageCode = "en"</code></li>
+      <li>Language toggle accent-colored to indicate EN active</li>
+      <li>Same layout as VI — only text content changes</li>
+    </ul>
+  </div>
+</div>
+
+</body>
+</html>

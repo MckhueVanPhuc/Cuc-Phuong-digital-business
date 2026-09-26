@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SCR-M03-001 — Route Administration | Cuc Phuong Quest</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --color-primary: #2D6A4F;
+    --color-primary-dark: #1B4332;
+    --color-primary-light: #40916C;
+    --color-accent: #D4A017;
+    --color-accent-light: #F0C040;
+    --color-bg: #F5F7F4;
+    --color-surface: #FFFFFF;
+    --color-border: #E0E8E3;
+    --color-text-primary: #1A2E22;
+    --color-text-secondary: #5A7A68;
+    --color-text-muted: #8AA89E;
+    --color-success: #2D6A4F;
+    --color-warning: #D4A017;
+    --color-danger: #C0392B;
+    --color-info: #2980B9;
+    --shadow-sm: 0 1px 3px rgba(45,106,79,0.08);
+    --shadow-md: 0 4px 12px rgba(45,106,79,0.12);
+    --shadow-lg: 0 8px 24px rgba(45,106,79,0.16);
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 14px;
+    --font-body: 'Inter', 'Nunito', system-ui, sans-serif;
+    --font-display: 'Playfair Display', serif;
+    --sidebar-width: 260px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { font-size: 14px; }
+  body {
+    font-family: var(--font-body);
+    background: var(--color-bg);
+    color: var(--color-text-primary);
+    min-height: 100vh;
+    display: flex;
+  }
+
+  /* ─── Sidebar ─── */
+  .sidebar {
+    width: var(--sidebar-width);
+    min-height: 100vh;
+    background: var(--color-primary);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0; left: 0;
+    z-index: 100;
+  }
+  .sidebar-logo {
+    padding: 28px 24px 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+  }
+  .sidebar-logo h1 {
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    color: #fff;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+  .sidebar-logo span {
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.6);
+    font-weight: 400;
+    display: block;
+    margin-top: 2px;
+  }
+  .sidebar-section-label {
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    padding: 20px 24px 8px;
+  }
+  .sidebar-nav { flex: 1; padding: 8px 12px; }
+  .sidebar-nav a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: var(--radius-sm);
+    color: rgba(255,255,255,0.75);
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: background 0.15s, color 0.15s;
+    margin-bottom: 2px;
+  }
+  .sidebar-nav a:hover { background: rgba(255,255,255,0.1); color: #fff; }
+  .sidebar-nav a.active {
+    background: rgba(255,255,255,0.18);
+    color: #fff;
+  }
+  .sidebar-nav a .icon { font-size: 1rem; width: 20px; text-align: center; }
+  .sidebar-nav a .badge {
+    margin-left: auto;
+    background: var(--color-accent);
+    color: var(--color-text-primary);
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 99px;
+  }
+  .sidebar-footer {
+    padding: 16px 12px;
+    border-top: 1px solid rgba(255,255,255,0.12);
+  }
+  .sidebar-user {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+  }
+  .sidebar-user:hover { background: rgba(255,255,255,0.1); }
+  .avatar {
+    width: 34px; height: 34px;
+    background: var(--color-accent);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.8rem;
+    color: var(--color-text-primary);
+    flex-shrink: 0;
+  }
+  .avatar.reviewer { background: #E8D5F0; color: #7B2D8B; }
+  .sidebar-user-info { flex: 1; overflow: hidden; }
+  .sidebar-user-info .name {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #fff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .sidebar-user-info .role {
+    font-size: 0.68rem;
+    color: rgba(255,255,255,0.5);
+  }
+
+  /* ─── Main Content ─── */
+  .main-content {
+    margin-left: var(--sidebar-width);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  /* Header */
+  .top-header {
+    background: var(--color-surface);
+    border-bottom: 1px solid var(--color-border);
+    padding: 0 32px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+  .top-header-left { display: flex; align-items: center; gap: 16px; }
+  .hamburger {
+    background: none;
+    border: none;
+    font-size: 1.3rem;
+    cursor: pointer;
+    padding: 6px;
+    border-radius: var(--radius-sm);
+    color: var(--color-text-secondary);
+  }
+  .hamburger:hover { background: var(--color-bg); }
+  .top-header-title {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+  }
+  .top-header-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .header-btn {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: var(--radius-sm);
+    color: var(--color-text-secondary);
+    position: relative;
+  }
+  .header-btn:hover { background: var(--color-bg); }
+
+  /* Page content */
+  .page-content {
+    padding: 28px 32px;
+    flex: 1;
+  }
+
+  /* Toolbar */
+  .toolbar {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  .search-box {
+    flex: 1;
+    max-width: 400px;
+    position: relative;
+  }
+  .search-box input {
+    width: 100%;
+    padding: 9px 14px 9px 38px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    font-size: 0.875rem;
+    font-family: var(--font-body);
+    background: var(--color-surface);
+    color: var(--color-text-primary);
+    transition: border-color 0.15s, box-shadow 0.15s;
+    outline: none;
+  }
+  .search-box input:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(45,106,79,0.1);
+  }
+  .search-box input::placeholder { color: var(--color-text-muted); }
+  .search-box .search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--color-text-muted);
+    font-size: 0.875rem;
+  }
+
+  /* Filter tabs */
+  .filter-tabs {
+    display: flex;
+    gap: 4px;
+    background: var(--color-bg);
+    padding: 4px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-border);
+  }
+  .filter-tab {
+    padding: 7px 16px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    font-size: 0.8rem;
+    font-weight: 500;
+    font-family: var(--font-body);
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+    white-space: nowrap;
+  }
+  .filter-tab:hover { background: rgba(45,106,79,0.06); color: var(--color-primary); }
+  .filter-tab.active {
+    background: var(--color-primary);
+    color: #fff;
+  }
+  .filter-tab .count {
+    display: inline-block;
+    background: rgba(255,255,255,0.25);
+    border-radius: 99px;
+    padding: 0 6px;
+    font-size: 0.7rem;
+    margin-left: 4px;
+  }
+  .filter-tab.active .count { background: rgba(255,255,255,0.3); }
+  .filter-tab:not(.active) .count {
+    background: var(--color-border);
+    color: var(--color-text-muted);
+  }
+
+  /* List header */
+  .list-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+  }
+  .list-title {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--color-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .list-title span {
+    font-weight: 700;
+    color: var(--color-primary);
+  }
+
+  /* Route list */
+  .route-list { display: flex; flex-direction: column; gap: 10px; }
+  .route-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    transition: box-shadow 0.15s, border-color 0.15s;
+  }
+  .route-card:hover {
+    box-shadow: var(--shadow-md);
+    border-color: rgba(45,106,79,0.25);
+  }
+
+  .status-dot {
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .status-dot.nhap { background: #95A5A6; }
+  .status-dot.cho-duyet { background: var(--color-warning); }
+  .status-dot.hoat-dong { background: var(--color-success); }
+  .status-dot.tam-dong { background: #7F8C8D; }
+
+  .route-card-body { flex: 1; min-width: 0; }
+  .route-card-name {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .route-card-name .status-label {
+    font-size: 0.68rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 99px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .status-label.nhap { background: #F0F0F0; color: #7F8C8D; }
+  .status-label.cho-duyet { background: #FFF9E6; color: #B8860B; }
+  .status-label.hoat-dong { background: #EAF5EF; color: #2D6A4F; }
+  .status-label.tam-dong { background: #F0F0F0; color: #7F8C8D; }
+
+  .route-card-meta {
+    font-size: 0.78rem;
+    color: var(--color-text-muted);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .route-card-meta .separator { color: var(--color-border); }
+  .closure-reason {
+    font-size: 0.72rem;
+    color: #C0392B;
+    font-style: italic;
+  }
+
+  .route-card-actions { display: flex; gap: 8px; flex-shrink: 0; }
+  .btn {
+    padding: 7px 14px;
+    border-radius: var(--radius-sm);
+    font-size: 0.8rem;
+    font-weight: 600;
+    font-family: var(--font-body);
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all 0.15s;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .btn-ghost {
+    background: transparent;
+    border-color: var(--color-border);
+    color: var(--color-text-secondary);
+  }
+  .btn-ghost:hover { background: var(--color-bg); border-color: var(--color-primary-light); color: var(--color-primary); }
+  .btn-primary {
+    background: var(--color-primary);
+    color: #fff;
+    border-color: var(--color-primary);
+  }
+  .btn-primary:hover { background: var(--color-primary-dark); }
+  .btn-danger {
+    background: transparent;
+    border-color: #E74C3C;
+    color: #C0392B;
+  }
+  .btn-danger:hover { background: #FDEDEC; }
+  .btn-accent {
+    background: var(--color-accent);
+    color: var(--color-text-primary);
+    border-color: var(--color-accent);
+  }
+  .btn-accent:hover { background: var(--color-accent-light); }
+  .btn-sm { padding: 5px 10px; font-size: 0.75rem; }
+
+  /* Create button */
+  .create-btn {
+    width: 100%;
+    padding: 14px;
+    border: 2px dashed var(--color-border);
+    border-radius: var(--radius-md);
+    background: transparent;
+    color: var(--color-primary);
+    font-size: 0.875rem;
+    font-weight: 600;
+    font-family: var(--font-body);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.15s;
+    margin-top: 4px;
+  }
+  .create-btn:hover {
+    border-color: var(--color-primary);
+    background: rgba(45,106,79,0.04);
+  }
+
+  /* Empty state */
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--color-text-muted);
+  }
+  .empty-state .empty-icon {
+    font-size: 3rem;
+    margin-bottom: 12px;
+    opacity: 0.4;
+  }
+  .empty-state p { font-size: 0.875rem; margin-bottom: 4px; }
+  .empty-state .sub { font-size: 0.78rem; }
+
+  /* Modal */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    backdrop-filter: blur(2px);
+  }
+  .modal {
+    background: var(--color-surface);
+    border-radius: var(--radius-lg);
+    padding: 28px;
+    width: 480px;
+    max-width: 90vw;
+    box-shadow: var(--shadow-lg);
+    animation: modal-in 0.2s ease;
+  }
+  @keyframes modal-in {
+    from { opacity: 0; transform: scale(0.95) translateY(-8px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+  }
+  .modal-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .modal-icon { font-size: 1.5rem; }
+  .modal-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--color-text-primary);
+  }
+  .modal-body { margin-bottom: 20px; }
+  .modal-body p {
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+    margin-bottom: 12px;
+  }
+  .modal-body .route-name {
+    font-weight: 700;
+    color: var(--color-text-primary);
+  }
+  .modal-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--color-text-secondary);
+    margin-bottom: 6px;
+    display: block;
+  }
+  .modal-textarea {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    font-size: 0.875rem;
+    font-family: var(--font-body);
+    resize: vertical;
+    min-height: 80px;
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .modal-textarea:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(45,106,79,0.1);
+  }
+  .modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+  }
+
+  /* Page nav footer */
+  .page-footer-nav {
+    border-top: 1px solid var(--color-border);
+    background: var(--color-surface);
+    padding: 12px 32px;
+    display: flex;
+    gap: 20px;
+  }
+  .footer-nav-btn {
+    background: none;
+    border: none;
+    font-size: 0.8rem;
+    font-family: var(--font-body);
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    padding: 6px 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border-bottom: 2px solid transparent;
+    transition: all 0.15s;
+  }
+  .footer-nav-btn:hover { color: var(--color-primary); border-bottom-color: var(--color-primary); }
+</style>
+</head>
+<body>
+
+<!-- ─── Sidebar ─── -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <h1>Cúc Phương Quest</h1>
+    <span>Content Management</span>
+  </div>
+
+  <div class="sidebar-section-label">Quản trị</div>
+  <nav class="sidebar-nav">
+    <a href="#" class="active">
+      <span class="icon">🛤️</span> Quản lý tuyến
+    </a>
+    <a href="#">
+      <span class="icon">📋</span> Báo cáo
+      <span class="badge">3</span>
+    </a>
+    <a href="#" class="nav-reviewer-only" style="display:none">
+      <span class="icon">👤</span> Quản lý tài khoản
+    </a>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="sidebar-user">
+      <div class="avatar">LN</div>
+      <div class="sidebar-user-info">
+        <div class="name">Lan Nguyen Thi</div>
+        <div class="role">Content Staff</div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- ─── Main Content ─── -->
+<main class="main-content">
+
+  <!-- Top header -->
+  <header class="top-header">
+    <div class="top-header-left">
+      <button class="hamburger">☰</button>
+      <span class="top-header-title">Quản lý tuyến</span>
+    </div>
+    <div class="top-header-right">
+      <button class="header-btn" title="Thông báo">🔔</button>
+      <button class="header-btn" title="Cài đặt">⚙️</button>
+    </div>
+  </header>
+
+  <!-- Page content -->
+  <div class="page-content">
+
+    <!-- Toolbar -->
+    <div class="toolbar">
+      <div class="search-box">
+        <span class="search-icon">🔍</span>
+        <input type="text" placeholder="Tìm kiếm tuyến..." role="searchbox" aria-label="Tìm kiếm tuyến">
+      </div>
+      <div class="filter-tabs" role="tablist" aria-label="Bộ lọc trạng thái">
+        <button class="filter-tab" role="tab" aria-selected="false">Nháp <span class="count">2</span></button>
+        <button class="filter-tab active" role="tab" aria-selected="true">Chờ duyệt <span class="count">1</span></button>
+        <button class="filter-tab" role="tab" aria-selected="false">Hoạt động <span class="count">1</span></button>
+        <button class="filter-tab" role="tab" aria-selected="false">Tạm đóng <span class="count">1</span></button>
+      </div>
+    </div>
+
+    <!-- List header -->
+    <div class="list-header">
+      <div class="list-title">Tuyến <span>(4)</span></div>
+    </div>
+
+    <!-- Route list -->
+    <div class="route-list" role="list">
+
+      <!-- Route item #1 — NHAP -->
+      <div class="route-card" role="listitem">
+        <div class="status-dot nhap"></div>
+        <div class="route-card-body">
+          <div class="route-card-name">
+            Tuyến Rừng Nguyên Sinh
+            <span class="status-label nhap">NHÁP</span>
+          </div>
+          <div class="route-card-meta">
+            <span>Content Staff: Lan NT</span>
+            <span class="separator">·</span>
+            <span>5 checkpoint</span>
+            <span class="separator">·</span>
+            <span>5 km</span>
+          </div>
+        </div>
+        <div class="route-card-actions">
+          <button class="btn btn-ghost btn-sm">Mở</button>
+          <button class="btn btn-danger btn-sm">Xóa</button>
+        </div>
+      </div>
+
+      <!-- Route item #2 — CHO_DUYET -->
+      <div class="route-card" role="listitem">
+        <div class="status-dot cho-duyet"></div>
+        <div class="route-card-body">
+          <div class="route-card-name">
+            Tuyến Đại Thác Nước
+            <span class="status-label cho-duyet">CHỜ DUYỆT</span>
+          </div>
+          <div class="route-card-meta">
+            <span>Đang chờ: Minh PK</span>
+            <span class="separator">·</span>
+            <span>7 checkpoint</span>
+            <span class="separator">·</span>
+            <span>8 km</span>
+          </div>
+        </div>
+        <div class="route-card-actions">
+          <button class="btn btn-ghost btn-sm">Mở</button>
+        </div>
+      </div>
+
+      <!-- Route item #3 — TAM_DONG -->
+      <div class="route-card" role="listitem">
+        <div class="status-dot tam-dong"></div>
+        <div class="route-card-body">
+          <div class="route-card-name">
+            Tuyến Hang Động
+            <span class="status-label tam-dong">TẠM ĐÓNG</span>
+          </div>
+          <div class="route-card-meta">
+            <span>Đóng: Sạc lở</span>
+            <span class="separator">·</span>
+            <span class="closure-reason">"Sạc lở cần bảo trì, tạm đóng 2 tuần"</span>
+          </div>
+        </div>
+        <div class="route-card-actions">
+          <button class="btn btn-ghost btn-sm">Mở</button>
+          <button class="btn btn-accent btn-sm">Mở lại ✓</button>
+        </div>
+      </div>
+
+      <!-- Route item #4 — HOAT_DONG -->
+      <div class="route-card" role="listitem">
+        <div class="status-dot hoat-dong"></div>
+        <div class="route-card-body">
+          <div class="route-card-name">
+            Tuyến Khám Phá Rừng Sâu
+            <span class="status-label hoat-dong">HOẠT ĐỘNG</span>
+          </div>
+          <div class="route-card-meta">
+            <span>5 checkpoint</span>
+            <span class="separator">·</span>
+            <span>12 km</span>
+            <span class="separator">·</span>
+            <span>⭐ 4.8 (124 đánh giá)</span>
+          </div>
+        </div>
+        <div class="route-card-actions">
+          <button class="btn btn-ghost btn-sm">Mở</button>
+          <button class="btn btn-danger btn-sm">Đóng ⚠</button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Create button -->
+    <button class="create-btn">+ Tạo tuyến mới</button>
+
+  </div>
+
+  <!-- Page footer nav -->
+  <div class="page-footer-nav">
+    <button class="footer-nav-btn">📋 Báo cáo</button>
+    <button class="footer-nav-btn nav-reviewer-only" style="display:none">👤 Quản lý tài khoản</button>
+  </div>
+
+</main>
+
+<!-- ─── Close Confirmation Modal ─── -->
+<div class="modal-overlay" id="closeModal">
+  <div class="modal" role="dialog" aria-labelledby="modalTitle" aria-modal="true">
+    <div class="modal-header">
+      <span class="modal-icon">⚠️</span>
+      <div class="modal-title" id="modalTitle">Xác nhận đóng tuyến</div>
+    </div>
+    <div class="modal-body">
+      <p>
+        Tuyến <span class="route-name">"Tuyến Khám Phá Rừng Sâu"</span> sẽ ngừng hoạt động.
+        Khách đang trải nghiệm sẽ bị thoát khỏi phiên.
+      </p>
+      <label class="modal-label" for="closureReason">Lý do đóng *</label>
+      <textarea class="modal-textarea" id="closureReason" placeholder="Nhập lý do đóng tuyến (tối thiểu 5 ký tự)..."></textarea>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="document.getElementById('closeModal').style.display='none'">Hủy</button>
+      <button class="btn btn-danger">Xác nhận đóng</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Demo: open close modal on [Đóng] click
+  document.querySelectorAll('.btn-danger').forEach(function(btn) {
+    if (btn.textContent.includes('Đóng')) {
+      btn.addEventListener('click', function() {
+        document.getElementById('closeModal').style.display = 'flex';
+      });
+    }
+  });
+  // Close modal on backdrop click
+  document.getElementById('closeModal').addEventListener('click', function(e) {
+    if (e.target === this) this.style.display = 'none';
+  });
+  // Filter tab active state
+  document.querySelectorAll('.filter-tab').forEach(function(tab) {
+    tab.addEventListener('click', function() {
+      document.querySelectorAll('.filter-tab').forEach(t => { t.classList.remove('active'); t.setAttribute('aria-selected','false'); });
+      this.classList.add('active');
+      this.setAttribute('aria-selected','true');
+    });
+  });
+</script>
+</body>
+</html>
